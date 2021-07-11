@@ -105,7 +105,7 @@ include"functions.php";
 			<div class="col-auto my-1">
 			<label class="mr-sm-2" for="inlineFormCustomSelect">Fasilitas</label>
 			<select name='fasilitas' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-				<option value"">Choose...</option>
+				<option value="">Choose...</option>
 				<option value="sedikit">Sedikit</option>
 				<option value="cukup">Cukup</option>
 				<option value="banyak">Banyak</option>
