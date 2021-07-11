@@ -115,7 +115,7 @@ include"functions.php";
 			<label class="mr-sm-2" for="inlineFormCustomSelect">Pengunjung</label>
 			<select name='pengunjung' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
 				<option value="">Choose...</option>
-				<option value="sepi">sepi</option>
+				<option value="sepi">Sepi</option>
 				<option value="biasa">Biasa</option>
 				<option value="ramai">Ramai</option>
 			</select>
