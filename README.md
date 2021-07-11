@@ -1,5 +1,5 @@
 # SPK-Pariwisata-FuzzyTahani
-Implementasi Fuzzy Tahani Pada Database MySQL dan Sistem Berbasis Web dengan PHP
+Implementasi Fuzzy Tahani Pada Database MySQL dan Aplikasi Berbasis Web dengan PHP
 
 Instalasi:
 1. Pastikan Mysql dan PHP sudah terinstal di perangkat anda.
