@@ -121,11 +121,13 @@ include"functions.php";
 			</select>
 			</div>
 		</div>
-		<button type="submit" name='submit' class="btn btn-primary btn-lg btn-block mt-4 mb-4">Submit</button>
+		<button type="submit" name='submit' class="btn btn-primary btn-lg btn-block mt-4 mb-4" value='and'>Submit - Logika AND</button>
+		<button type="submit" name='submit' class="btn btn-success btn-lg btn-block mt-4 mb-4" value='or'>Submit - Logika OR</button>
 	</form>
 
 		<?php
 			if(isset($_GET['submit'])){
+				$submit = $_GET['submit'];
 				$jenis = $_GET['jenis'];
 				$harga = $_GET['harga'];
 				$jarak = $_GET['jarak'];
@@ -239,7 +241,11 @@ include"functions.php";
 				$fire_strength = array();
 				$it = 0;
 				foreach ($fuzzy_jenis as &$value) {
-					array_push($fire_strength, $value * $fuzzy_harga[$it] * $fuzzy_jarak[$it] * $fuzzy_fasilitas[$it] * $fuzzy_pengunjung[$it]);
+					if($submit == 'and'){
+						array_push($fire_strength, $value * $fuzzy_harga[$it] * $fuzzy_jarak[$it] * $fuzzy_fasilitas[$it] * $fuzzy_pengunjung[$it]);
+					}else{
+						array_push($fire_strength, $value + $fuzzy_harga[$it] + $fuzzy_jarak[$it] + $fuzzy_fasilitas[$it] + $fuzzy_pengunjung[$it]);
+					}
 					$it = $it + 1;
 				}
 				
