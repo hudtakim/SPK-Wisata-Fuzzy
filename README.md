@@ -13,6 +13,14 @@ User Guide:
 1. Isikan seluruh kriteria wisata yang diinginkan.
 2. Klik tombol submit untuk melihat hasil rekomendasi.
 
+Cara Kerja Aplikasi:
+1. Menerima input kriteria wisata dari user.
+2. Mengambil bobot kriteria dari database sesuai dengan kriteria yang diinputkan.
+3. Menghitung fire strength setiap pasangan kriteria.
+4. Memanggil data wisata yang memiliki fire strength > 0, dan menyimpannya pada database sementara.
+6. Menampilkan data wisata dari data base sementara pada tampilan web sebagai tempat wisata yang direkomendasikan.
+7. Menghapus data wisata pada database sementara.
+
 Perhatian: 
 1. Data yang digunakan pada aplikasi ini berasal dari hasil penelitian Agung Prayogi, 
    silahkan baca paper penelitiannya di: https://docplayer.info/82508178-Sistem-pendukung-keputusan-pemilihan-obyek-wisata-tegal-menggunakan-metode-fuzzy-tahani.html
