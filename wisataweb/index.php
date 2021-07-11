@@ -60,12 +60,15 @@ include"functions.php";
 	h1{
 		text-shadow: 5px 2px blue;
 	}
+	a { color: inherit; }
+	a:hover { color: inherit; } 
+
 
 </style>
 <body>
 	<div class='container mt-5'>
 	<div class="jumbotron" id='home'>
-  		<h1 class="text-light shadow-lg">Sistem Pendukung Keputusan</h1>
+  		<h1 class="text-light shadow-lg"><a href="/wisataweb">Sistem Pendukung Keputusan</a></h1>
   		<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 	</div>
 	<p align="center"><b>Silahkan Masukkan Kriteria Objek Wisata</b></p>
