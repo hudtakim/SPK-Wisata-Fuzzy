@@ -7,6 +7,7 @@ Instalasi:
 3. Pastikan XAMPP sudah berjalan untuk menjalankan MYSQL dan Apache
 4. Taruh Folder wisataweb pada folder htdoc di sistem anda.
 5. Jalankan di browser dengan alamat: 'localhost/wisataweb'
+6. Agar tampilan tidak acak-acakan, pastikan perangkat anda terkoneksi internet dikarenakan aplikasi ini menggunakan CDN bootstrap.
 
 User Guide:
 1. Isikan seluruh kriteria wisata yang diinginkan.
