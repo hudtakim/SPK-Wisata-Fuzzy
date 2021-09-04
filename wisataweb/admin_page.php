@@ -83,8 +83,11 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		</div>
 		<p align="center"><b>Ini adalah laman khusus admin</b></p>
         <a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>
-
-		<div class="edit-kriteria">
+		<message>
+			1. Silahkan tambah kriteria, pastikan nama kriteria dan sub-kriteria sesuai dengan kolom tabel pada database<br>
+			2. Pastikan kriteria baru yang akan dimasukkan sudah terdapat pada database<br>
+        </message>
+		<div class="edit-kriteria mt-4">
 			<form name="tambah-kriteria" action="process.php" method="POST">
 				<input type="text" placeholder= "Kriteria" name="kriteria" value="">
 				<input type="text" placeholder= "Nilai Bawah" name="bawah" value="">

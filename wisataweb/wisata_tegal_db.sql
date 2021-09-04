@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2021 at 04:20 AM
+-- Generation Time: Sep 04, 2021 at 01:59 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -20,6 +20,74 @@ SET time_zone = "+00:00";
 --
 -- Database: `wisata_tegal_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `username` varchar(10) NOT NULL,
+  `password` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`username`, `password`) VALUES
+('admin', '1234admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `daftar_kriteria`
+--
+
+CREATE TABLE `daftar_kriteria` (
+  `id` int(10) NOT NULL,
+  `kriteria` varchar(20) NOT NULL,
+  `bawah` varchar(20) NOT NULL,
+  `tengah` varchar(20) NOT NULL,
+  `atas` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `daftar_kriteria`
+--
+
+INSERT INTO `daftar_kriteria` (`id`, `kriteria`, `bawah`, `tengah`, `atas`) VALUES
+(26, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai'),
+(27, 'Jenis', 'Alam', 'Sosial_Budaya', 'Religi_Sejarah'),
+(29, 'Fasilitas', 'Sedikit', 'Cukup', 'Banyak'),
+(40, 'Jarak', 'Dekat', 'Sedang', 'Jauh'),
+(41, 'Harga', 'Murah', 'Sedang', 'Mahal');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `daftar_kriteria_static`
+--
+
+CREATE TABLE `daftar_kriteria_static` (
+  `id` int(20) NOT NULL,
+  `kriteria` varchar(30) NOT NULL,
+  `bawah` varchar(30) NOT NULL,
+  `tengah` varchar(30) NOT NULL,
+  `atas` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `daftar_kriteria_static`
+--
+
+INSERT INTO `daftar_kriteria_static` (`id`, `kriteria`, `bawah`, `tengah`, `atas`) VALUES
+(1, 'Jarak', 'Dekat', 'Sedang', 'Jauh'),
+(2, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai'),
+(3, 'Jenis', 'Alam', 'Sosial_budaya', 'Religi_Sejarah'),
+(4, 'Fasilitas', 'Sedikit', 'Cukup', 'Banyak'),
+(5, 'Harga', 'Murah', 'Sedang', 'Mahal');
 
 -- --------------------------------------------------------
 
@@ -296,6 +364,18 @@ INSERT INTO `tempat_wisata_tb` (`obyek_wisata`, `jenis`, `fasilitas`, `harga`, `
 --
 
 --
+-- Indexes for table `daftar_kriteria`
+--
+ALTER TABLE `daftar_kriteria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `daftar_kriteria_static`
+--
+ALTER TABLE `daftar_kriteria_static`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `fuzzy_fasilitas`
 --
 ALTER TABLE `fuzzy_fasilitas`
@@ -354,6 +434,18 @@ ALTER TABLE `tempat_wisata_tb`
 --
 
 --
+-- AUTO_INCREMENT for table `daftar_kriteria`
+--
+ALTER TABLE `daftar_kriteria`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `daftar_kriteria_static`
+--
+ALTER TABLE `daftar_kriteria_static`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `fuzzy_fasilitas`
 --
 ALTER TABLE `fuzzy_fasilitas`
@@ -393,13 +485,13 @@ ALTER TABLE `kelompok`
 -- AUTO_INCREMENT for table `penghitungan_bobot_tb`
 --
 ALTER TABLE `penghitungan_bobot_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=524;
 
 --
 -- AUTO_INCREMENT for table `rekomendasi_tb`
 --
 ALTER TABLE `rekomendasi_tb`
-  MODIFY `no` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1010;
+  MODIFY `no` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1420;
 
 --
 -- AUTO_INCREMENT for table `tempat_wisata_tb`
