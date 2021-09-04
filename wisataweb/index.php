@@ -1,5 +1,4 @@
 <?php 
-//Input_tabel form
 include"functions.php";
  ?>
 
@@ -76,51 +75,21 @@ include"functions.php";
 
 		<form method='GET' action="">
 			<div class="form-row align-items-center">
+			<?php
+					$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+					$num = 1;
+					while($data = mysqli_fetch_array($daftar_kriteria)):
+				?>
 				<div class="col-auto my-1">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">Jenis Wisata</label>
-					<select name='jenis' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
+					<label class="mr-sm-2" for="inlineFormCustomSelect"><?=$data['kriteria'];?></label>
+					<select name='<?=strtolower($data['kriteria']);?>' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
 						<option value="">Choose...</option>
-						<option value="alam">Alam</option>
-						<option value="sosial_budaya">Sosial & Budaya</option>
-						<option value="religi_sejarah">Religi & Sejarah</option>
+						<option value="<?=strtolower($data['bawah']);?>"><?=$data['bawah'];?></option>
+						<option value="<?=strtolower($data['tengah']);?>"><?=$data['tengah'];?></option>
+						<option value="<?=strtolower($data['atas']);?>"><?=$data['atas'];?></option>
 					</select>
 				</div>
-				<div class="col-auto my-1">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">Harga</label>
-					<select name='harga' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-						<option value="">Choose...</option>
-						<option value="murah">Murah</option>
-						<option value="sedang">Sedang</option>
-						<option value="mahal">Mahal</option>
-					</select>
-				</div>
-				<div class="col-auto my-1">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">Jarak ke Pusat Kota</label>
-					<select name='jarak' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-						<option value="">Choose...</option>
-						<option value="dekat">Dekat</option>
-						<option value="sedang">Sedang</option>
-						<option value="jauh">Jauh</option>
-					</select>
-				</div>
-				<div class="col-auto my-1">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">Fasilitas</label>
-					<select name='fasilitas' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-						<option value="">Choose...</option>
-						<option value="sedikit">Sedikit</option>
-						<option value="cukup">Cukup</option>
-						<option value="banyak">Banyak</option>
-					</select>
-				</div>
-				<div class="col-auto my-1">
-					<label class="mr-sm-2" for="inlineFormCustomSelect">Pengunjung</label>
-					<select name='pengunjung' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-						<option value="">Choose...</option>
-						<option value="sepi">Sepi</option>
-						<option value="biasa">Biasa</option>
-						<option value="ramai">Ramai</option>
-					</select>
-				</div>
+			<?php $num++; endwhile;?>
 			</div>
 			<button type="submit" name='submit' class="btn btn-primary btn-lg btn-block mt-4 mb-4" value='and'>Submit - Logika AND</button>
 			<button type="submit" name='submit' class="btn btn-success btn-lg btn-block mt-4 mb-4" value='or'>Submit - Logika OR</button>
@@ -129,12 +98,32 @@ include"functions.php";
 		<?php
 			if(isset($_GET['submit'])){
 				$submit = $_GET['submit'];
-				$jenis = $_GET['jenis'];
-				$harga = $_GET['harga'];
-				$jarak = $_GET['jarak'];
-				$fasilitas = $_GET['fasilitas'];
-				$pengunjung = $_GET['pengunjung'];
-	
+				if(isset($_GET['jenis'])){
+					$jenis = $_GET['jenis'];
+				} else {
+					$jenis = "null";
+				}
+				if(isset($_GET['harga'])){
+					$harga = $_GET['harga'];
+				} else {
+					$harga = "null";
+				}
+				if(isset($_GET['jarak'])){
+					$jarak = $_GET['jarak'];
+				} else {
+					$jarak = "null";
+				}
+				if(isset($_GET['fasilitas'])){
+					$fasilitas = $_GET['fasilitas'];
+				} else {
+					$fasilitas = "null";
+				}
+				if(isset($_GET['pengunjung'])){
+					$pengunjung = $_GET['pengunjung'];
+				} else {
+					$pengunjung = "null";
+				}
+				
 				echo "<br>Pilihan anda:";
 				echo " -> Jenis: "; echo $jenis;
 				echo " -> Harga: "; echo $harga;
@@ -167,7 +156,7 @@ include"functions.php";
 					}else if($jenis == 'religi_sejarah'){
 						$bobot_jenis = mysqli_query($conn,"SELECT religi_sejarah from fuzzy_jenis");
 					}else{
-						echo "Tidak ada Data Jenis Wisata!!!";
+						$bobot_jenis = "null";
 					}
 	
 					if($harga == 'murah'){
@@ -177,7 +166,7 @@ include"functions.php";
 					}else if($harga == 'mahal'){
 						$bobot_harga = mysqli_query($conn,"SELECT mahal from fuzzy_harga");
 					}else{
-						echo "Tidak ada Data Harga!!!";
+						$bobot_harga = "null";
 					}
 	
 					if($jarak == 'dekat'){
@@ -187,7 +176,7 @@ include"functions.php";
 					}else if($jarak == 'jauh'){
 						$bobot_jarak = mysqli_query($conn,"SELECT jauh from fuzzy_jarak");
 					}else{
-						echo "Tidak ada Data Jarak!!!";
+						$bobot_jarak = "null";
 					}
 	
 					if($fasilitas == 'sedikit'){
@@ -197,7 +186,7 @@ include"functions.php";
 					}else if($fasilitas == 'banyak'){
 						$bobot_fasilitas = mysqli_query($conn,"SELECT banyak from fuzzy_fasilitas");
 					}else{
-						echo "Tidak ada Data Fasilitas!!!";
+						$bobot_fasilitas = "null";
 					}
 	
 					if($pengunjung == 'sepi'){
@@ -207,38 +196,61 @@ include"functions.php";
 					}else if($pengunjung == 'ramai'){
 						$bobot_pengunjung = mysqli_query($conn,"SELECT ramai from fuzzy_pengunjung");
 					}else{
-						echo "Tidak ada Data Pengunjung!!!";
+						$bobot_pengunjung = "null";
 					}
-					
-	
-					$bobot_jenis = mysqli_fetch_all($bobot_jenis);
-					$bobot_harga = mysqli_fetch_all($bobot_harga);
-					$bobot_jarak = mysqli_fetch_all($bobot_jarak);
-					$bobot_fasilitas = mysqli_fetch_all($bobot_fasilitas);
-					$bobot_pengunjung = mysqli_fetch_all($bobot_pengunjung);
-	
+
 					$fuzzy_jenis = array();
 					$fuzzy_harga = array();
 					$fuzzy_jarak = array();
 					$fuzzy_fasilitas = array();
 					$fuzzy_pengunjung = array();
-	
-					foreach ($bobot_jenis as &$value){
-						array_push($fuzzy_jenis, $value[0]);
+					
+					if($bobot_jenis != "null") {
+						$bobot_jenis = mysqli_fetch_all($bobot_jenis);
+						foreach ($bobot_jenis as &$value){
+							array_push($fuzzy_jenis, $value[0]);
+						}
+					}else {for ($x = 0; $x < 15; $x++) {
+						array_push($fuzzy_jenis, 1);
+					  }
 					}
-					foreach ($bobot_harga as &$value){
-						array_push($fuzzy_harga, $value[0]);
+					if($bobot_harga != "null") {
+						$bobot_harga = mysqli_fetch_all($bobot_harga);
+						foreach ($bobot_harga as &$value){
+							array_push($fuzzy_harga, $value[0]);
+						}
+					}else {for ($x = 0; $x < 15; $x++) {
+						array_push($fuzzy_harga, 1);
+					  }
 					}
-					foreach ($bobot_jarak as &$value){
-						array_push($fuzzy_jarak, $value[0]);
+					if($bobot_jarak != "null") {
+						$bobot_jarak = mysqli_fetch_all($bobot_jarak);
+						foreach ($bobot_jarak as &$value){
+							array_push($fuzzy_jarak, $value[0]);
+						}
+					}else {for ($x = 0; $x < 15; $x++) {
+						array_push($fuzzy_jarak, 1);
+					  }
 					}
-					foreach ($bobot_fasilitas as &$value){
-						array_push($fuzzy_fasilitas, $value[0]);
+					if($bobot_fasilitas != "null") {
+						$bobot_fasilitas = mysqli_fetch_all($bobot_fasilitas);
+						foreach ($bobot_fasilitas as &$value){
+							array_push($fuzzy_fasilitas, $value[0]);
+						}
+					}else {for ($x = 0; $x < 15; $x++) {
+						array_push($fuzzy_fasilitas, 1);
+					  }
 					}
-					foreach ($bobot_pengunjung as &$value){
-						array_push($fuzzy_pengunjung, $value[0]);
+					if($bobot_pengunjung != "null") {
+						$bobot_pengunjung = mysqli_fetch_all($bobot_pengunjung);
+						foreach ($bobot_pengunjung as &$value){
+							array_push($fuzzy_pengunjung, $value[0]);
+						}
+					}else {for ($x = 0; $x < 15; $x++) {
+						array_push($fuzzy_pengunjung, 1);
+					  }
 					}
-	
+						
 					$fire_strength = array();
 					$it = 0;
 					foreach ($fuzzy_jenis as &$value) {

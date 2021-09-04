@@ -83,6 +83,49 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		</div>
 		<p align="center"><b>Ini adalah laman khusus admin</b></p>
         <a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>
+
+		<div class="edit-kriteria">
+			<form name="tambah-kriteria" action="process.php" method="POST">
+				<input type="text" placeholder= "Kriteria" name="kriteria" value="">
+				<input type="text" placeholder= "Nilai Bawah" name="bawah" value="">
+				<input type="text" placeholder= "Nilai Tengah" name="tengah" value="">
+				<input type="text" placeholder= "Nilai Atas" name="atas" value="">
+				<button type="submit" class="btn btn-success" name="submit">Tambah Kriteria</button>
+			</form>
+		</div>
+
+		<div class="daftar-kriteria mt-5">
+			<table class='table table-bordered'>
+				<thead class="thead-dark">
+					<tr>
+						<th>No</th>
+						<th>Kriteria</th>
+						<th>Nilai Bawah</th>
+						<th>Nilai Tengah</th>
+						<th>Nilai Atas</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				<?php
+					$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+					$num = 1;
+					while($data = mysqli_fetch_array($daftar_kriteria)):
+				?>
+				<tr>
+					<th><?=$num;?></th>
+					<th><?=$data['kriteria'];?></th>
+					<th><?=$data['bawah'];?></th>
+					<th><?=$data['tengah'];?></th>
+					<th><?=$data['atas'];?></th>
+					<th><a href="delete.php?id=<?php echo $data['id']; ?>"><button class="btn btn-danger">Delete</button></a></th>
+				</tr>
+				<?php $num++; endwhile;?>
+				</tbody>
+			</table>
+		</div>
+
 	</div>
 </body>
 </html>
