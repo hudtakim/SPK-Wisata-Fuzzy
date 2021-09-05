@@ -92,17 +92,19 @@ if($_SESSION['legitUser'] != 'qwerty'){
 			<form method='POST' action="tambah_lokasi.php">
 				<div class="form-row align-items-center">
 					<div class="col-auto my-1 input-group">
-                        <input type="text" name="nama"  placeholder="Nama Lokasi" class="mr-1" required>
-						<select name='jenis' class="custom-select mr-1" id="inlineFormCustomSelect" required>
+                        <input type="text" name="nama"  placeholder="Nama Lokasi" class="mr-1 mt-3" required>
+						<select name='jenis' class=" mr-1 mt-3" id="inlineFormCustomSelect" required>
 							<option value="">Jenis Wisata</option>
                             <option value="Alam">Alam</option>
                             <option value="Sosial dan Budaya">Sosial dan Budaya</option>
                             <option value="Religi dan Sejarah">Religi dan Sejarah</option>
 						</select>
-                        <input name="fasilitas" type="number" placeholder="Jumlah Fasilitas" class="mr-1" required>
-                        <input name="harga" type="number" placeholder="Harga Tiket" class="mr-1" required>
-                        <input name="pengunjung" type="number" placeholder="Pengunjung" class="mr-1" required>
-                        <input name="jarak" type="number" placeholder="Jarak" class="mr-1" required>
+						<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE kriteria != 'jenis'");
+							while($data = mysqli_fetch_array($daftar_kriteria)):
+						?>
+							<input name="<?= strtolower($data['kriteria']) ?>" type="number" placeholder="<?=$data['kriteria'];?>" class="mr-1 mt-3" required>
+						<?php endwhile;?>
 					</div>
                     <div class="col-12 my-1">
                         <button type="submit" class="btn btn-success btn-block float mt-3" name="submit">Tambah Data</button>
@@ -121,11 +123,12 @@ if($_SESSION['legitUser'] != 'qwerty'){
                     <tr>
                         <th>No</th>
                         <th>Nama Lokasi</th>
-                        <th>Jenis</th>
-                        <th>Fasilitas</th>
-                        <th>Harga</th>
-                        <th>Pengunjung</th>
-                        <th>Jarak</th>
+						<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
+							while($data = mysqli_fetch_array($daftar_kriteria)):
+						?>
+						<th><?=$data['kriteria'];?></th>
+						<?php endwhile;?>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -139,11 +142,12 @@ if($_SESSION['legitUser'] != 'qwerty'){
                     <tr>
                         <th><?=$num;?></th>
                         <th><?=$data['obyek_wisata'];?></th>
-                        <th><?=$data['jenis'];?></th>
-                        <th><?=$data['fasilitas'];?></th>
-                        <th><?=$data['harga'];?></th>
-                        <th><?=$data['pengunjung'];?></th>
-                        <th><?=$data['jarak'];?></th>
+						<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
+							while($dakrit = mysqli_fetch_array($daftar_kriteria)):
+						?>
+						<th><?=$data[strtolower($dakrit['kriteria'])];?></th>
+						<?php endwhile;?>
                         <th><a href="delete.php?id=<?php echo $data['id']; ?>&item=lokasi"><button class="btn btn-danger">Delete</button></a></th>
                     </tr>
 

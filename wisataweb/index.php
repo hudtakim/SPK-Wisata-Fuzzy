@@ -138,11 +138,12 @@ include"functions.php";
 				<tr>
 					<th>No</th>
 					<th>Nama Wisata</th>
-					<th>Jenis Wisata</th>
-					<th>Harga Tiket (Rp)</th>
-					<th>Jarak Wisata (KM)</th>
-					<th>Jumlah Fasilitas</th>
-					<th>Banyak Pengunjung</th>
+					<?php
+						$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+						while($data = mysqli_fetch_array($daftar_kriteria)):
+					?>
+						<th><?=$data['kriteria'];?></th>
+					<?php endwhile;?>
 					<th>Fire Strength</th>
 				</tr>
 			</thead>
@@ -302,11 +303,12 @@ include"functions.php";
 						<tr>
 							<th><?=$num;?></th>
 							<th><?=$data['obyek_wisata'];?></th>
-							<th><?=$data['jenis'];?></th>
-							<th><?=$data['harga'];?></th>
-							<th><?=$data['jarak'];?></th>
-							<th><?=$data['fasilitas'];?></th>
-							<th><?=$data['pengunjung'];?></th>
+							<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+								while($dakrit = mysqli_fetch_array($daftar_kriteria)):
+							?>
+							<th><?=$data[strtolower($dakrit['kriteria'])];?></th>
+							<?php endwhile;?>
 							<th><?=$data['fire_strength'];?></th>
 						</tr>
 	
@@ -328,11 +330,12 @@ include"functions.php";
 						<tr>
 							<th>No</th>
 							<th>Nama Wisata</th>
-							<th>Bobot Jenis</th>
-							<th>Bobot Harga</th>
-							<th>Bobot Jarak</th>
-							<th>Bobot Fasilitas</th>
-							<th>Bobot Pengunjung</th>
+							<?php
+								$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+								while($data = mysqli_fetch_array($daftar_kriteria)):
+							?>
+							<th>Bobot <?=$data['kriteria'];?></th>
+							<?php endwhile;?>
 							<th>Fire Strength</th>
 						</tr>
 					</thead>
@@ -346,11 +349,17 @@ include"functions.php";
 						<tr>
 							<th><?=$num;?></th>
 							<th><?=$data['obyek_wisata'];?></th>
-							<th><?=$data['bobot_jenis'];?></th>
-							<th><?=$data['bobot_harga'];?></th>
-							<th><?=$data['bobot_jarak'];?></th>
-							<th><?=$data['bobot_fasilitas'];?></th>
-							<th><?=$data['bobot_pengunjung'];?></th>
+							
+							<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+							while($dakrit = mysqli_fetch_array($daftar_kriteria)):
+								$str="bobot_";
+								$str.=strtolower($dakrit['kriteria']);
+							?>
+							
+							<th><?=$data[$str];?></th>
+							<?php endwhile;?>
+							
 							<th><?=$data['fire_strength'];?></th>
 						</tr>
 
