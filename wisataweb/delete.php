@@ -16,7 +16,7 @@ if($item == 'lokasi'){
     $del = mysqli_query($conn,"DELETE FROM tempat_wisata_tb where id = '$id'");
     $del = mysqli_query($conn,"DELETE FROM fuzzy_fasilitas where id = '$id'");
     $del = mysqli_query($conn,"DELETE FROM fuzzy_harga where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM tempat_jarak where id = '$id'");
+    $del = mysqli_query($conn,"DELETE FROM fuzzy_jarak where id = '$id'");
     $del = mysqli_query($conn,"DELETE FROM fuzzy_pengunjung where id = '$id'");
     $del = mysqli_query($conn,"DELETE FROM fuzzy_jenis where id = '$id'");
 }

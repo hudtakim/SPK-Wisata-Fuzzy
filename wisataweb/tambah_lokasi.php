@@ -30,6 +30,10 @@ if(isset($_POST['submit'])){
         $row = $getid->fetch_row();
         $nid = $row[0] ?? false;
         $id = (int)$nid;
+        $hrg = (int)$hrg;
+        $jrk = (int)$jrk;
+        $fsls = (int)$fsls;
+        $pgnj = (int)$pgnj;
 
         //insert data to fuzzy_fasilitas
         $bawah = getbobot_fasilitas($fsls, "sedikit");

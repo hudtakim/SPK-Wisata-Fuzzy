@@ -19,7 +19,7 @@ function getbobot_jenis($subkrit){
         return $bobot;
     }
 }
-function getbobot_harga($value, $subkrit){
+function getbobot_harga($value){
     if($subkrit == "murah"){
         if($value <= 10000){
             $bobot = 1; 
@@ -33,7 +33,7 @@ function getbobot_harga($value, $subkrit){
         }
     }
     if($subkrit == "sedang"){
-        if($value <= 10000 && $value >= 50000){
+        if($value <= 10000 || $value >= 50000){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 10000 && $value <= 25000){
@@ -49,10 +49,10 @@ function getbobot_harga($value, $subkrit){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 25000 && $value <= 50000){
-            $bobot= ($value - 10000)/15000;
+            $bobot= ($value - 25000)/50000;
             return $bobot;
         } else {
-            $bobot= (50000 - $value)/25000;
+            $bobot= 1;
             return $bobot;
         }
     }
@@ -63,7 +63,7 @@ function getbobot_jarak($value, $subkrit){
             $bobot = 1; 
             return $bobot;
         }elseif($value >= 5 && $value <= 10){
-            $bobot= (25000 - $value)/15000;
+            $bobot= (10 - $value)/5;
             return $bobot;
         } else {
             $bobot= 0;
@@ -71,7 +71,7 @@ function getbobot_jarak($value, $subkrit){
         }
     }
     if($subkrit == "sedang"){
-        if($value <= 5 && $value >= 10){
+        if($value <= 5 || $value >= 20){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 5 && $value <= 10){
@@ -83,7 +83,7 @@ function getbobot_jarak($value, $subkrit){
         }
     }
     if($subkrit == "jauh"){
-        if($value <= 20){
+        if($value <= 10){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 10 && $value <= 20){
@@ -109,7 +109,7 @@ function getbobot_fasilitas($value, $subkrit){
         }
     }
     if($subkrit == "cukup"){
-        if($value <= 5 && $value >= 10){
+        if($value <= 5 || $value >= 20){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 5 && $value <= 10){
@@ -121,7 +121,7 @@ function getbobot_fasilitas($value, $subkrit){
         }
     }
     if($subkrit == "banyak"){
-        if($value <= 20){
+        if($value <= 10){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 10 && $value <= 20){
@@ -147,7 +147,7 @@ function getbobot_pengunjung($value, $subkrit){
         }
     }
     if($subkrit == "biasa"){
-        if($value <= 1000 && $value >= 10000){
+        if($value <= 1000 || $value >= 10000){
             $bobot = 0; 
             return $bobot;
         } elseif($value >= 1000 && $value <= 4500){
