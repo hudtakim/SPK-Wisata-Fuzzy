@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2021 at 01:59 PM
+-- Generation Time: Sep 05, 2021 at 06:41 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -58,11 +58,10 @@ CREATE TABLE `daftar_kriteria` (
 --
 
 INSERT INTO `daftar_kriteria` (`id`, `kriteria`, `bawah`, `tengah`, `atas`) VALUES
-(26, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai'),
-(27, 'Jenis', 'Alam', 'Sosial_Budaya', 'Religi_Sejarah'),
-(29, 'Fasilitas', 'Sedikit', 'Cukup', 'Banyak'),
-(40, 'Jarak', 'Dekat', 'Sedang', 'Jauh'),
-(41, 'Harga', 'Murah', 'Sedang', 'Mahal');
+(41, 'Harga', 'Murah', 'Sedang', 'Mahal'),
+(47, 'Jarak', 'Dekat', 'Sedang', 'Jauh'),
+(48, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai'),
+(53, 'Luas', 'Sempit', 'Sedang', 'Longgar');
 
 -- --------------------------------------------------------
 
@@ -75,19 +74,23 @@ CREATE TABLE `daftar_kriteria_static` (
   `kriteria` varchar(30) NOT NULL,
   `bawah` varchar(30) NOT NULL,
   `tengah` varchar(30) NOT NULL,
-  `atas` varchar(30) NOT NULL
+  `atas` varchar(30) NOT NULL,
+  `nbawah` int(20) NOT NULL,
+  `ntengah` int(20) NOT NULL,
+  `natas` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `daftar_kriteria_static`
 --
 
-INSERT INTO `daftar_kriteria_static` (`id`, `kriteria`, `bawah`, `tengah`, `atas`) VALUES
-(1, 'Jarak', 'Dekat', 'Sedang', 'Jauh'),
-(2, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai'),
-(3, 'Jenis', 'Alam', 'Sosial_budaya', 'Religi_Sejarah'),
-(4, 'Fasilitas', 'Sedikit', 'Cukup', 'Banyak'),
-(5, 'Harga', 'Murah', 'Sedang', 'Mahal');
+INSERT INTO `daftar_kriteria_static` (`id`, `kriteria`, `bawah`, `tengah`, `atas`, `nbawah`, `ntengah`, `natas`) VALUES
+(1, 'Jarak', 'Dekat', 'Sedang', 'Jauh', 5, 10, 20),
+(2, 'Pengunjung', 'Sepi', 'Biasa', 'Ramai', 1000, 4500, 10000),
+(3, 'Jenis', 'Alam', 'Sosial_budaya', 'Religi_Sejarah', 0, 0, 0),
+(4, 'Fasilitas', 'Sedikit', 'Cukup', 'Banyak', 5, 10, 20),
+(5, 'Harga', 'Murah', 'Sedang', 'Mahal', 10000, 25000, 50000),
+(17, 'Luas', 'Sempit', 'Sedang', 'Longgar', 13, 123, 232);
 
 -- --------------------------------------------------------
 
@@ -236,6 +239,42 @@ INSERT INTO `fuzzy_jenis` (`id`, `obyek_wisata`, `jenis`, `alam`, `sosial_budaya
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fuzzy_luas`
+--
+
+CREATE TABLE `fuzzy_luas` (
+  `id` int(11) NOT NULL,
+  `obyek_wisata` varchar(30) NOT NULL,
+  `luas` float NOT NULL,
+  `sempit` float NOT NULL,
+  `sedang` float NOT NULL,
+  `longgar` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fuzzy_luas`
+--
+
+INSERT INTO `fuzzy_luas` (`id`, `obyek_wisata`, `luas`, `sempit`, `sedang`, `longgar`) VALUES
+(1, 'Desa Wisata Guci', 123, 0, 1, 0),
+(2, 'Pantai Alam Indah', 21, 0.927273, 0.0727273, 0),
+(3, 'Pantai Purwahamba Indah', 23, 0.909091, 0.0909091, 0),
+(4, 'Waduk Cacaban', 232, 0, 0, 0.886179),
+(5, 'Wisata Kesehatan Jamu Kalibaku', 23, 0.909091, 0.0909091, 0),
+(6, 'Yogya Waterboom', 23, 0.909091, 0.0909091, 0),
+(7, 'Konsorsium Rumah Wayang', 23, 0.909091, 0.0909091, 0),
+(8, 'Gerbang Mas Bahari Waterpark', 232, 0, 0, 0.886179),
+(9, 'Rita Park', 32, 0.827273, 0.172727, 0),
+(10, 'Hutan Mangrove Tegal', 23, 0.909091, 0.0909091, 0),
+(11, 'Makam Ki Gede Sebayu', 323, 0, 0, 1),
+(12, 'Makam Sunan Amangkurat I', 23, 0.909091, 0.0909091, 0),
+(13, 'Klenteng Tek Hay Kiong', 123, 0, 1, 0),
+(14, 'Situs Purbakala Semedo', 133, 0, 0.908257, 0.0813008),
+(15, 'Pool Terrace Samudra', 232, 0, 0, 0.886179);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `fuzzy_pengunjung`
 --
 
@@ -277,14 +316,14 @@ INSERT INTO `fuzzy_pengunjung` (`id`, `obyek_wisata`, `pengunjung`, `sepi`, `bia
 
 CREATE TABLE `kelompok` (
   `id` int(10) NOT NULL,
-  `nama_kelompok` varchar(30) NOT NULL
+  `nama kelompok` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `kelompok`
 --
 
-INSERT INTO `kelompok` (`id`, `nama_kelompok`) VALUES
+INSERT INTO `kelompok` (`id`, `nama kelompok`) VALUES
 (1, 'harga'),
 (2, 'jarak');
 
@@ -335,29 +374,30 @@ CREATE TABLE `tempat_wisata_tb` (
   `harga` int(10) NOT NULL,
   `pengunjung` int(10) NOT NULL,
   `jarak` int(10) NOT NULL,
-  `id` int(10) NOT NULL
+  `id` int(10) NOT NULL,
+  `luas` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tempat_wisata_tb`
 --
 
-INSERT INTO `tempat_wisata_tb` (`obyek_wisata`, `jenis`, `fasilitas`, `harga`, `pengunjung`, `jarak`, `id`) VALUES
-('Desa Wisata Guci', 'Alam', 16, 7000, 66558, 28, 1),
-('Pantai Alam Indah', 'Alam', 7, 5000, 31336, 18, 2),
-('Pantai Purwahamba Indah', 'Alam', 15, 3500, 29257, 25, 3),
-('Waduk Cacaban', 'Alam', 6, 4000, 3833, 22, 4),
-('Wisata Kesehatan Jamu Kalibaku', 'Alam', 6, 5000, 710, 14, 5),
-('Yogya Waterboom', 'Sosial dan Budaya', 10, 15000, 4644, 4, 6),
-('Konsorsium Rumah Wayang', 'Sosial dan Budaya', 5, 0, 1487, 11, 7),
-('Gerbang Mas Bahari Waterpark', 'Sosial dan Budaya', 11, 25000, 31187, 16, 8),
-('Rita Park', 'Sosial dan Budaya', 24, 60000, 25043, 15, 9),
-('Hutan Mangrove Tegal', 'Alam', 2, 0, 900, 18, 10),
-('Makam Ki Gede Sebayu', 'Religi dan Sejarah', 3, 0, 3888, 10, 11),
-('Makam Sunan Amangkurat I', 'Religi dan Sejarah', 3, 0, 4255, 9, 12),
-('Klenteng Tek Hay Kiong', 'Religi dan Sejarah', 4, 0, 5627, 16, 13),
-('Situs Purbakala Semedo', 'Religi dan Sejarah', 2, 0, 649, 24, 14),
-('Pool Terrace Samudra', 'Sosial dan Budaya', 7, 7500, 4411, 15, 15);
+INSERT INTO `tempat_wisata_tb` (`obyek_wisata`, `jenis`, `fasilitas`, `harga`, `pengunjung`, `jarak`, `id`, `luas`) VALUES
+('Desa Wisata Guci', 'Alam', 16, 7000, 66558, 28, 1, 123),
+('Pantai Alam Indah', 'Alam', 7, 5000, 31336, 18, 2, 21),
+('Pantai Purwahamba Indah', 'Alam', 15, 3500, 29257, 25, 3, 23),
+('Waduk Cacaban', 'Alam', 6, 4000, 3833, 22, 4, 232),
+('Wisata Kesehatan Jamu Kalibaku', 'Alam', 6, 5000, 710, 14, 5, 23),
+('Yogya Waterboom', 'Sosial dan Budaya', 10, 15000, 4644, 4, 6, 23),
+('Konsorsium Rumah Wayang', 'Sosial dan Budaya', 5, 0, 1487, 11, 7, 23),
+('Gerbang Mas Bahari Waterpark', 'Sosial dan Budaya', 11, 25000, 31187, 16, 8, 232),
+('Rita Park', 'Sosial dan Budaya', 24, 60000, 25043, 15, 9, 32),
+('Hutan Mangrove Tegal', 'Alam', 2, 0, 900, 18, 10, 23),
+('Makam Ki Gede Sebayu', 'Religi dan Sejarah', 3, 0, 3888, 10, 11, 323),
+('Makam Sunan Amangkurat I', 'Religi dan Sejarah', 3, 0, 4255, 9, 12, 23),
+('Klenteng Tek Hay Kiong', 'Religi dan Sejarah', 4, 0, 5627, 16, 13, 123),
+('Situs Purbakala Semedo', 'Religi dan Sejarah', 2, 0, 649, 24, 14, 133),
+('Pool Terrace Samudra', 'Sosial dan Budaya', 7, 7500, 4411, 15, 15, 232);
 
 --
 -- Indexes for dumped tables
@@ -400,6 +440,12 @@ ALTER TABLE `fuzzy_jenis`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `fuzzy_luas`
+--
+ALTER TABLE `fuzzy_luas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `fuzzy_pengunjung`
 --
 ALTER TABLE `fuzzy_pengunjung`
@@ -437,43 +483,49 @@ ALTER TABLE `tempat_wisata_tb`
 -- AUTO_INCREMENT for table `daftar_kriteria`
 --
 ALTER TABLE `daftar_kriteria`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `daftar_kriteria_static`
 --
 ALTER TABLE `daftar_kriteria_static`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `fuzzy_fasilitas`
 --
 ALTER TABLE `fuzzy_fasilitas`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `fuzzy_harga`
 --
 ALTER TABLE `fuzzy_harga`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `fuzzy_jarak`
 --
 ALTER TABLE `fuzzy_jarak`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `fuzzy_jenis`
 --
 ALTER TABLE `fuzzy_jenis`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `fuzzy_luas`
+--
+ALTER TABLE `fuzzy_luas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `fuzzy_pengunjung`
 --
 ALTER TABLE `fuzzy_pengunjung`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `kelompok`
@@ -485,19 +537,19 @@ ALTER TABLE `kelompok`
 -- AUTO_INCREMENT for table `penghitungan_bobot_tb`
 --
 ALTER TABLE `penghitungan_bobot_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=524;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=569;
 
 --
 -- AUTO_INCREMENT for table `rekomendasi_tb`
 --
 ALTER TABLE `rekomendasi_tb`
-  MODIFY `no` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1420;
+  MODIFY `no` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1465;
 
 --
 -- AUTO_INCREMENT for table `tempat_wisata_tb`
 --
 ALTER TABLE `tempat_wisata_tb`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -19,7 +19,7 @@ function getbobot_jenis($subkrit){
         return $bobot;
     }
 }
-function getbobot_harga($value){
+function getbobot_harga($value, $subkrit){
     if($subkrit == "murah"){
         if($value <= 10000){
             $bobot = 1; 
@@ -171,4 +171,45 @@ function getbobot_pengunjung($value, $subkrit){
         }
     }
 }
+
+//pakai yang dibawah ini, lebih mantap, yg di atas ngga dinamis!!!!
+function getbobot($value, $subkrit, $bawah, $tengah, $atas){
+    if($subkrit == "bawah"){
+        if($value <= $bawah){
+            $bobot = 1; 
+            return $bobot;
+        } elseif($value >= $bawah && $value <= $tengah){
+            $bobot= ($tengah - $value)/($tengah-$bawah);
+            return $bobot;
+        } else {
+            $bobot= 0;
+            return $bobot;
+        }
+    }
+    if($subkrit == "tengah"){
+        if($value <= $bawah || $value >= $atas){
+            $bobot = 0; 
+            return $bobot;
+        } elseif($value >= $bawah && $value <= $tengah){
+            $bobot= ($value - $bawah)/($tengah-$bawah);
+            return $bobot;
+        } else {
+            $bobot= ($atas - $value)/($atas-$tengah);
+            return $bobot;
+        }
+    }
+    if($subkrit == "atas"){
+        if($value <= $tengah){
+            $bobot = 0; 
+            return $bobot;
+        } elseif($value >= $tengah && $value <= $atas){
+            $bobot= ($value - $tengah)/$tengah;
+            return $bobot;
+        } else {
+            $bobot= 1;
+            return $bobot;
+        }
+    }
+}
+
 ?>

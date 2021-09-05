@@ -122,7 +122,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
                         <th>No</th>
                         <th>Nama Lokasi</th>
                         <th>Jenis</th>
-                        <th>fasilitas</th>
+                        <th>Fasilitas</th>
                         <th>Harga</th>
                         <th>Pengunjung</th>
                         <th>Jarak</th>

@@ -35,40 +35,44 @@ if(isset($_POST['submit'])){
         $fsls = (int)$fsls;
         $pgnj = (int)$pgnj;
 
-        //insert data to fuzzy_fasilitas
-        $bawah = getbobot_fasilitas($fsls, "sedikit");
-        $tengah = getbobot_fasilitas($fsls, "cukup");
-        $atas = getbobot_fasilitas($fsls, "banyak");
-        mysqli_query($conn, "INSERT INTO fuzzy_fasilitas(id, obyek_wisata, fasilitas, sedikit, cukup, banyak) 
-        VALUES('$id','$ob_wis', '$fsls', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_harga
-        $bawah = getbobot_harga($hrg, "murah");
-        $tengah = getbobot_harga($hrg, "sedang");
-        $atas = getbobot_harga($hrg, "mahal");
-        mysqli_query($conn, "INSERT INTO fuzzy_harga(id, obyek_wisata, harga, murah, sedang, mahal) 
-        VALUES('$id','$ob_wis', '$hrg', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_jarak
-        $bawah = getbobot_jarak($jrk, "dekat");
-        $tengah = getbobot_jarak($jrk, "sedang");
-        $atas = getbobot_jarak($jrk, "jauh");
-        mysqli_query($conn, "INSERT INTO fuzzy_jarak(id, obyek_wisata, jarak, dekat, sedang, jauh) 
-        VALUES('$id','$ob_wis', '$jrk', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_pengunjung
-        $bawah = getbobot_pengunjung($pgnj, "sepi");
-        $tengah = getbobot_pengunjung($pgnj, "biasa");
-        $atas = getbobot_pengunjung($pgnj, "ramai");
-        mysqli_query($conn, "INSERT INTO fuzzy_pengunjung(id, obyek_wisata, pengunjung, sepi, biasa, ramai) 
-        VALUES('$id','$ob_wis', '$pgnj', '$bawah', '$tengah', '$atas')");
-
         //insert data to fuzzy_jenis
         $bawah = getbobot_jenis($jns)[0];
         $tengah = getbobot_jenis($jns)[1];
         $atas = getbobot_jenis($jns)[2];
         mysqli_query($conn, "INSERT INTO fuzzy_jenis(id, obyek_wisata, jenis, alam, sosial_budaya, religi_sejarah) 
         VALUES('$id','$ob_wis', '$jns', '$bawah', '$tengah', '$atas')");
+
+        //insert data to fuzzy_fasilitas
+        $v0=$fsls ;$v1= 5; $v2= 10; $v3= 20;
+        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
+        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
+        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
+        mysqli_query($conn, "INSERT INTO fuzzy_fasilitas(id, obyek_wisata, fasilitas, sedikit, cukup, banyak) 
+        VALUES('$id','$ob_wis', '$fsls', '$bawah', '$tengah', '$atas')");
+
+        //insert data to fuzzy_harga
+        $v0=$hrg ; $v1= 10000; $v2= 25000; $v3= 50000;
+        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
+        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
+        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
+        mysqli_query($conn, "INSERT INTO fuzzy_harga(id, obyek_wisata, harga, murah, sedang, mahal) 
+        VALUES('$id','$ob_wis', '$hrg', '$bawah', '$tengah', '$atas')");
+
+        //insert data to fuzzy_jarak
+        $v0=$jrk ; $v1= 5; $v2= 10; $v3= 20;
+        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
+        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
+        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
+        mysqli_query($conn, "INSERT INTO fuzzy_jarak(id, obyek_wisata, jarak, dekat, sedang, jauh) 
+        VALUES('$id','$ob_wis', '$jrk', '$bawah', '$tengah', '$atas')");
+
+        //insert data to fuzzy_pengunjung
+        $v0=$pgnj ; $v1= 1000; $v2= 4500; $v3= 10000;
+        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
+        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
+        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
+        mysqli_query($conn, "INSERT INTO fuzzy_pengunjung(id, obyek_wisata, pengunjung, sepi, biasa, ramai) 
+        VALUES('$id','$ob_wis', '$pgnj', '$bawah', '$tengah', '$atas')");
 
         if($result2){ 
             $message = "Berhasil menambahkan data lokasi wisata.";

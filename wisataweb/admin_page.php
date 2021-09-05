@@ -84,6 +84,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		<p align="center"><b>Pengaturan Kriteria SPK</b></p>
         <a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>
 		<a href="admin.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Kembali ke Menu Utama</button></a>
+		<a href="tambah_kriteria.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Tambah Kriteria Baru</button></a>
 		<message>
 			Silahkan pilih kriteria yang akan diaktifkan:
         </message>
@@ -101,7 +102,8 @@ if($_SESSION['legitUser'] != 'qwerty'){
 							<option value="<?=$data['kriteria'];?>"><?=$data['kriteria'];?></option>
 							<?php $num++; endwhile;?>
 						</select>
-						<button type="submit" class="btn btn-success float" name="submit">Tambah Kriteria</button>
+						<button type="submit" class="btn btn-success float ml-2" name="submit">Aktifkan Kriteria</button>
+						<button type="submit" class="btn btn-danger float ml-2" name="submit-del">Hapus Kriteria</button>
 					</div>
 				</div>
 			</form>
@@ -132,7 +134,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
 					<th><?=$data['bawah'];?></th>
 					<th><?=$data['tengah'];?></th>
 					<th><?=$data['atas'];?></th>
-					<th><a href="delete.php?id=<?php echo $data['id']; ?>&item=kriteria"><button class="btn btn-danger">Delete</button></a></th>
+					<th><a href="delete.php?id=<?php echo $data['id']; ?>&item=kriteria"><button class="btn btn-danger">Non-aktifkan</button></a></th>
 				</tr>
 				<?php $num++; endwhile;?>
 				</tbody>
