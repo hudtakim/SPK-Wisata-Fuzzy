@@ -19,7 +19,7 @@
     if($count == 1){  
         $_SESSION['legitUser'] = 'qwerty';
         $message = "Login Sukses !!!";
-        echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
+        echo "<script>alert('$message'); window.location.replace('admin.php');</script>";
     }  
     else{         
         // Function call

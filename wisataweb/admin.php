@@ -81,62 +81,15 @@ if($_SESSION['legitUser'] != 'qwerty'){
 			<h1 class="text-light shadow-lg"><a href="/wisataweb">Sistem Pendukung Keputusan</a></h1>
 			<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 		</div>
-		<p align="center"><b>Pengaturan Kriteria SPK</b></p>
+		<p align="center"><b>Ini adalah laman khusus admin</b></p>
         <a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>
-		<a href="admin.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Kembali ke Menu Utama</button></a>
 		<message>
-			Silahkan pilih kriteria yang akan diaktifkan:
+			Berikut adalah previlege admin :
         </message>
-		<div class="edit-kriteria mt-4">
-			<form method='POST' action="process.php">
-				<div class="form-row align-items-center">
-					<div class="col-auto my-1 input-group">
-						<select name='kriteria' class="custom-select mr-sm-1" id="inlineFormCustomSelect" required>
-							<option value="">Choose...</option>
-				<?php
-						$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
-						$num = 1;
-						while($data = mysqli_fetch_array($daftar_kriteria)):
-					?>
-							<option value="<?=$data['kriteria'];?>"><?=$data['kriteria'];?></option>
-							<?php $num++; endwhile;?>
-						</select>
-						<button type="submit" class="btn btn-success float" name="submit">Tambah Kriteria</button>
-					</div>
-				</div>
-			</form>
-		</div>
-
-		<div class="daftar-kriteria mt-5">
-			<table class='table table-bordered'>
-				<thead class="thead-dark">
-					<tr>
-						<th>No</th>
-						<th>Kriteria</th>
-						<th>Nilai Bawah</th>
-						<th>Nilai Tengah</th>
-						<th>Nilai Atas</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-
-				<?php
-					$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
-					$num = 1;
-					while($data = mysqli_fetch_array($daftar_kriteria)):
-				?>
-				<tr>
-					<th><?=$num;?></th>
-					<th><?=$data['kriteria'];?></th>
-					<th><?=$data['bawah'];?></th>
-					<th><?=$data['tengah'];?></th>
-					<th><?=$data['atas'];?></th>
-					<th><a href="delete.php?id=<?php echo $data['id']; ?>&item=kriteria"><button class="btn btn-danger">Delete</button></a></th>
-				</tr>
-				<?php $num++; endwhile;?>
-				</tbody>
-			</table>
+		
+		<div class="main-menu mt-5">
+            <a href="data_lokasi_wisata.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Pengaturan Data Lokasi Wisata</button></a>
+            <a href="admin_page.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-5">Pengaturan Kriteria SPK</button></a>
 		</div>
 
 	</div>
