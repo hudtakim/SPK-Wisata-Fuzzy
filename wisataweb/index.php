@@ -71,6 +71,7 @@ include"functions.php";
 			<h1 class="text-light shadow-lg"><a href="/wisataweb">Sistem Pendukung Keputusan</a></h1>
 			<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 		</div>
+    <a href="login_form.html"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Login Admin</button></a>
 		<p align="center"><b>Silahkan Masukkan Kriteria Objek Wisata</b></p>
 
 		<form method='GET' action="">
