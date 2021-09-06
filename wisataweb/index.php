@@ -72,8 +72,14 @@ include"functions.php";
 			<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 		</div>
     <a href="login_form.html"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Login Admin</button></a>
-		<p align="center"><b>Silahkan Masukkan Kriteria Objek Wisata</b></p>
-
+		<?php
+      $krit_aktif = mysqli_query($conn,"SELECT * from daftar_kriteria");
+      $baris=mysqli_num_rows($krit_aktif);
+      if($baris == 0){
+        echo "<p align='center'><b>Mohon maaf, tidak ada kriteria wisata yang aktif, silahkan hubungi admin.</b></p>";
+      }else{
+        echo "<p align='center'><b>Silahkan Masukkan Kriteria Objek Wisata</b></p>";
+    ?>
 		<form method='GET' action="">
 			<div class="form-row align-items-center">
 			<?php
@@ -97,6 +103,7 @@ include"functions.php";
 		</form>
 
 		<?php
+      }
 			if(isset($_GET['submit'])){
 			  $submit = $_GET['submit'];
 
@@ -254,7 +261,7 @@ include"functions.php";
           $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
-            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
           )");
@@ -264,7 +271,7 @@ include"functions.php";
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
             {$newliskrit[0]} varchar(20) NOT NULL,
-            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[1]} varchar(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
          )");
@@ -272,7 +279,7 @@ include"functions.php";
           $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
-            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
             {$newliskrit[1]} float(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
@@ -283,8 +290,8 @@ include"functions.php";
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
             {$newliskrit[0]} varchar(20) NOT NULL,
-            {$newliskrit[1]} float(20) NOT NULL,
-            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[1]} varchar(20) NOT NULL,
+            {$newliskrit[2]} varchar(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
             )");
@@ -293,7 +300,7 @@ include"functions.php";
             $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
-            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
             {$newliskrit[1]} float(20) NOT NULL,
             {$newliskrit[2]} float(20) NOT NULL,
             fire_strength float(20) NOT NULL,
@@ -306,9 +313,9 @@ include"functions.php";
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
             {$newliskrit[0]} varchar(20) NOT NULL,
-            {$newliskrit[1]} float(20) NOT NULL,
-            {$newliskrit[2]} float(20) NOT NULL,
-            {$newliskrit[3]} float(20) NOT NULL,
+            {$newliskrit[1]} varchar(20) NOT NULL,
+            {$newliskrit[2]} varchar(20) NOT NULL,
+            {$newliskrit[3]} varchar(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
             )");
@@ -316,7 +323,7 @@ include"functions.php";
             $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
-            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
             {$newliskrit[1]} float(20) NOT NULL,
             {$newliskrit[2]} float(20) NOT NULL,
             {$newliskrit[3]} float(20) NOT NULL,
@@ -330,10 +337,10 @@ include"functions.php";
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
             {$newliskrit[0]} varchar(20) NOT NULL,
-            {$newliskrit[1]} float(20) NOT NULL,
-            {$newliskrit[2]} float(20) NOT NULL,
-            {$newliskrit[3]} float(20) NOT NULL,
-            {$newliskrit[4]} float(20) NOT NULL,
+            {$newliskrit[1]} varchar(20) NOT NULL,
+            {$newliskrit[2]} varchar(20) NOT NULL,
+            {$newliskrit[3]} varchar(20) NOT NULL,
+            {$newliskrit[4]} varchar(20) NOT NULL,
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
             )");
@@ -341,7 +348,7 @@ include"functions.php";
             $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
             id INT NOT NULL AUTO_INCREMENT,
             obyek_wisata VARCHAR(30) NOT NULL,
-            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
             {$newliskrit[1]} float(20) NOT NULL,
             {$newliskrit[2]} float(20) NOT NULL,
             {$newliskrit[3]} float(20) NOT NULL,
