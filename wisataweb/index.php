@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include"functions.php";
  ?>
 
@@ -71,8 +72,13 @@ include"functions.php";
 			<h1 class="text-light shadow-lg"><a href="/wisataweb">Sistem Pendukung Keputusan</a></h1>
 			<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 		</div>
-    <a href="login_form.html"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Login Admin</button></a>
-		<?php
+    <?php
+      if(isset($_SESSION['legitUser'])){
+        echo '<a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>';
+      }else{
+        echo '<a href="login_form.html"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Login Admin</button></a>';
+      }
+    
       $krit_aktif = mysqli_query($conn,"SELECT * from daftar_kriteria");
       $baris=mysqli_num_rows($krit_aktif);
       if($baris == 0){

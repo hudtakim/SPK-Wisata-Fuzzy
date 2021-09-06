@@ -23,7 +23,7 @@ if($item == 'lokasi'){
 
 if($del)
 {
-    mysqli_close($db); // Close connection
+    mysqli_close($conn); // Close connection
     if($item == 'kriteria'){
         header("location:admin_page.php"); // redirects to all records page
     }

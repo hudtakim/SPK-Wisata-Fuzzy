@@ -21,29 +21,29 @@ if(isset($_POST['submit'])){
         $rowcount=mysqli_num_rows($result2);
         $jumlah_kriteria_aktif = mysqli_query($conn,"SELECT * from daftar_kriteria");
         $jumlah_kriteria_aktif = mysqli_num_rows($jumlah_kriteria_aktif );
-        if($rowcount == 0){
-            while($data = mysqli_fetch_array($result1)):
-                $bawah = $data['bawah'];
-                $tengah = $data['tengah'];
-                $atas = $data['atas'];
-            endwhile;
-  
-            $result = mysqli_query($conn, "INSERT INTO daftar_kriteria(kriteria, bawah, tengah, atas) 
-            VALUES('$kriteria', '$bawah','$tengah', '$atas')");
-
-            if($result){ 
-                $message = "Berhasil mengaktifkan kriteria.";
+        if($rowcount == 1){
+            $message = "Kriteria yang anda pilih sudah aktif.";
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
-            } else {
-                echo $result;
-            }
         }else{
             if($jumlah_kriteria_aktif == 5){
-                $message = "Kriteria yang anda pilih sudah aktif.";
-                echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
-            }else{
                 $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 5.";
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
+            }else{
+                while($data = mysqli_fetch_array($result1)):
+                    $bawah = $data['bawah'];
+                    $tengah = $data['tengah'];
+                    $atas = $data['atas'];
+                endwhile;
+      
+                $result = mysqli_query($conn, "INSERT INTO daftar_kriteria(kriteria, bawah, tengah, atas) 
+                VALUES('$kriteria', '$bawah','$tengah', '$atas')");
+    
+                if($result){ 
+                    $message = "Berhasil mengaktifkan kriteria.";
+                    echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
+                } else {
+                    echo $result;
+                }
             }
         }
     }
@@ -59,7 +59,7 @@ if(isset($_POST['submit'])){
         $del = mysqli_query($conn,"DROP TABLE {$tname}");
         $del = mysqli_query($conn, "ALTER TABLE tempat_wisata_tb DROP COLUMN {$nk_lowered};");
         if($del){
-            mysqli_close($db); // Close connection
+            mysqli_close($conn); // Close connection
             $message = "Kriteria berhasil dihapus dari database.";
             echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
         }else {

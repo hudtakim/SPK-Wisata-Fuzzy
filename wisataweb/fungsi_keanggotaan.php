@@ -133,7 +133,7 @@ function getbobot_fasilitas($value, $subkrit){
         }
     }
 }
-function getbobot_pengunjung($value, $subkrit){
+function getbobot_pengunjung($subkrit){
     if($subkrit == "sepi"){
         if($value <= 1000){
             $bobot = 1; 
@@ -171,6 +171,7 @@ function getbobot_pengunjung($value, $subkrit){
         }
     }
 }
+
 
 //pakai yang dibawah ini, lebih mantap, yg di atas ngga dinamis!!!!
 function getbobot($value, $subkrit, $bawah, $tengah, $atas){
@@ -212,4 +213,24 @@ function getbobot($value, $subkrit, $bawah, $tengah, $atas){
     }
 }
 
+function getbobot_nonfuzzy($subkrit){
+    if($subkrit == "bawah"){
+        $bawah=1; $tengah=0; $atas=0;
+        $bobot = array();
+        array_push($bobot, $bawah); array_push($bobot, $tengah); array_push($bobot, $atas);
+        return $bobot;
+    }
+    if($subkrit == "tengah"){
+        $bawah=0; $tengah=1; $atas=0;
+        $bobot = array();
+        array_push($bobot, $bawah); array_push($bobot, $tengah); array_push($bobot, $atas);
+        return $bobot;
+    }
+    if($subkrit == "atas"){
+        $bawah=0; $tengah=0; $atas=1;
+        $bobot = array();
+        array_push($bobot, $bawah); array_push($bobot, $tengah); array_push($bobot, $atas);
+        return $bobot;
+    }
+}
 ?>

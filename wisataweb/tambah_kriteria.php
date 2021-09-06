@@ -88,6 +88,14 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		<div class="tambah-lokasi mt-4">
 			<form method='POST' action="tambah_kriteria_process.php">
 				<div class="form-row align-items-center">
+				<div class="mt-3"> Pilih jenis kriteria: <div>
+					<div class="col-auto my-1 input-group">
+						<select name="kategori" class="custom-select mr-sm-1" id="inlineFormCustomSelect" onChange="myFunction()" required>
+							<option value="">Choose...</option>
+							<option value="fuzzy">Kriteria Fuzzy</option>
+							<option value="non_fuzzy">Kriteria Non-Fuzzy</option>
+						</select>
+                    </div>
                     <div class="mt-3"> Isikan nama kriteria dan sub-kriteria: <div>
 					<div class="col-auto my-1 input-group">
                         <input type="text" name="nama"  placeholder="Nama Kriteria" class="mr-2" required>
@@ -95,15 +103,18 @@ if($_SESSION['legitUser'] != 'qwerty'){
                         <input type="text" name="sub2"  placeholder="Sub Kriteria 2" class="mr-2" required>
                         <input type="text" name="sub3"  placeholder="Sub Kriteria 3" class="mr-2" required>
                     </div>
-                    <div class="mt-3"> Isikan nilai batas: </div>
-                    <div class="col-auto my-1 input-group">            
-                        <input name="nbawah" type="number" placeholder="Nilai Bawah" class="mr-2" required>
-                        <input name="ntengah" type="number" placeholder="Nilai Tengah" class="mr-2" required>
-                        <input name="natas" type="number" placeholder="Nilai Atas" class="mr-2" required>  
+					<div id="coba" style="display: none;">
+						<div class="mt-3"> Isikan nilai batas:</div>
+						<div class="col-auto my-1 input-group">            
+							<input name="nbawah" type="number" id="v1" placeholder="Nilai Bawah" class="mr-2" required>
+							<input name="ntengah" type="number" id="v2" placeholder="Nilai Tengah" class="mr-2" required>
+							<input name="natas" type="number" id="v3" placeholder="Nilai Atas" class="mr-2" required>  
+						</div>
 					</div>
+
                     <div class="mt-3"> Isikan data kriteria untuk masing-masing lokasi wisata: </div>
                     <div class="col-auto my-1 input-group"> 
-                    <table class='table table-bordered mt-4'>
+                    <table class='table table-bordered mt-2' id="tabel_fuzzy" style="display: none;">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
@@ -121,8 +132,40 @@ if($_SESSION['legitUser'] != 'qwerty'){
                             <tr>
                                 <th><?=$num;?></th>
                                 <th><?=$data['obyek_wisata'];?></th>
-                                <th><input name="datakriteria<?=$data['id'];?>" type="number" placeholder="Nilai Kriteria" required></th>
+                                <th><input name="datakriteria<?=$data['id'];?>" type="number" placeholder="Nilai Kriteria"></th>
                             </tr>
+
+                        <?php $num++; endwhile;?>
+
+                        </tbody>
+                    </table>
+					<table class='table table-bordered mt-2' id="tabel_non" style="display: none;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Lokasi</th>
+                                <th>Data Kriteria</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php
+                            $result = mysqli_query($conn,"SELECT * from tempat_wisata_tb");
+                            $num = 1;
+                            while($data = mysqli_fetch_array($result)):
+                        ?>
+                            <tr>
+                                <th><?=$num;?></th>
+                                <th><?=$data['obyek_wisata'];?></th>
+								<th>
+								<select name="datakritnon<?=$data['id'];?>" class="custom-select mr-sm-1" required>
+									<option value="">Choose...</option>
+									<option value="bawah">Sub Kriteria 1</option>
+									<option value="tengah">Sub Kriteria 2</option>
+									<option value="atas">Sub Kriteria 3</option>
+								</select>
+								</th>
+							</tr>
 
                         <?php $num++; endwhile;?>
 
@@ -139,3 +182,54 @@ if($_SESSION['legitUser'] != 'qwerty'){
 	</div>
 </body>
 </html>
+
+<script>
+	function myFunction() {
+		var x = document.getElementById("coba");
+		var y = document.getElementById("inlineFormCustomSelect");
+		var t1 = document.getElementById("tabel_fuzzy");
+		var t2 = document.getElementById("tabel_non");
+		var v1 = document.getElementById("v1");
+		var v2 = document.getElementById("v2");
+		var v3 = document.getElementById("v3");
+		if(y.value == "fuzzy"){
+			if (x.style.display === "none") {
+				x.style.display = "block";
+				v1.value = ""; v2.value = ""; v3.value = "";
+			} else {
+				x.style.display = "block";
+				v1.value = ""; v2.value = ""; v3.value = "";
+			}
+		}else{
+			if (x.style.display === "none") {
+				x.style.display = "none";
+				v1.value = 0; v2.value = 0; v3.value = 0;
+			} else {
+				x.style.display = "none";
+				v1.value = 0; v2.value = 0; v3.value = 0;
+			}
+		}
+		if(y.value == "fuzzy"){
+			if (t1.style.display === "none") {
+				t1.style.display = "table";
+				t2.style.display = "none";
+				v1.value = ""; v2.value = ""; v3.value = "";
+			} else {
+				t1.style.display = "table";
+				t2.style.display = "none";
+				v1.value = ""; v2.value = ""; v3.value = "";
+			}
+		}else{
+			if (t2.style.display === "none") {
+				t2.style.display = "table";
+				t1.style.display = "none";
+				v1.value = 0; v2.value = 0; v3.value = 0;
+			} else {
+				t2.style.display = "table";
+				t1.style.display = "none";
+				v1.value = 0; v2.value = 0; v3.value = 0;
+			}
+		}
+		
+	}
+</script>
