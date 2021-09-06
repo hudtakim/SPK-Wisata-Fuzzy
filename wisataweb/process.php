@@ -12,9 +12,14 @@ if(isset($_POST['submit'])){
     //cek dulu apakah ada di database
     $result1 = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE (kriteria = '$kriteria')");
     $rowcount=mysqli_num_rows($result1);
+    $jumlah_kriteria_aktif = mysqli_query($conn,"SELECT * from daftar_kriteria");
+    $jumlah_kriteria_aktif = mysqli_num_rows($jumlah_kriteria_aktif );
 
     if($rowcount == 0){
         $message = "Data yang anda masukkan tidak ditemukan pada data base!!!";
+        echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
+    }elseif($jumlah_kriteria_aktif == 5){
+        $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 5.";
         echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
     }else{
         $result2 = mysqli_query($conn,"SELECT * from daftar_kriteria WHERE (kriteria = '$kriteria')");

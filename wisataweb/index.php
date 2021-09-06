@@ -97,39 +97,30 @@ include"functions.php";
 
 		<?php
 			if(isset($_GET['submit'])){
-				$submit = $_GET['submit'];
-				if(isset($_GET['jenis'])){
-					$jenis = $_GET['jenis'];
-				} else {
-					$jenis = "null";
-				}
-				if(isset($_GET['harga'])){
-					$harga = $_GET['harga'];
-				} else {
-					$harga = "null";
-				}
-				if(isset($_GET['jarak'])){
-					$jarak = $_GET['jarak'];
-				} else {
-					$jarak = "null";
-				}
-				if(isset($_GET['fasilitas'])){
-					$fasilitas = $_GET['fasilitas'];
-				} else {
-					$fasilitas = "null";
-				}
-				if(isset($_GET['pengunjung'])){
-					$pengunjung = $_GET['pengunjung'];
-				} else {
-					$pengunjung = "null";
-				}
-				
-				echo "<br>Pilihan anda:";
-				echo " -> Jenis: "; echo $jenis;
-				echo " -> Harga: "; echo $harga;
-				echo " -> Jarak: "; echo $jarak;
-				echo " -> Fasilitas: "; echo $fasilitas;
-				echo " -> Pengunjung: "; echo $pengunjung; echo "<br>";
+			  $submit = $_GET['submit'];
+
+        $daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+				$list_kriteria = array();
+				while($data = mysqli_fetch_array($daftar_kriteria)):
+            array_push($list_kriteria, strtolower($data['kriteria']));
+        endwhile;
+        
+        $inputUser = array();
+        foreach ($list_kriteria as &$value) {
+          array_push($inputUser, $_GET[$value]); 
+        }
+
+        echo "<br>Pilihan anda:";
+        $it=0;
+        $daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+        while($data = mysqli_fetch_array($daftar_kriteria)):
+          $str=" -> ";
+          $str.=$data['kriteria'];
+          $str.=": " ;
+          echo $str; echo $inputUser[$it];
+          $it++;
+        endwhile;
+        echo "<br>";
 		?>
 		
 		<h4>Berikut adalah saran objek wisata berdasarkan kriteria yang anda inputkan:</h4>
@@ -149,149 +140,307 @@ include"functions.php";
 			</thead>
 			<tbody>
 
-				<?php 
-					if($jenis == 'alam'){
-						$bobot_jenis = mysqli_query($conn,"SELECT alam from fuzzy_jenis");
-					}else if($jenis == 'sosial_budaya'){
-						$bobot_jenis = mysqli_query($conn,"SELECT sosial_budaya from fuzzy_jenis");
-					}else if($jenis == 'religi_sejarah'){
-						$bobot_jenis = mysqli_query($conn,"SELECT religi_sejarah from fuzzy_jenis");
-					}else{
-						$bobot_jenis = "null";
-					}
-	
-					if($harga == 'murah'){
-						$bobot_harga = mysqli_query($conn,"SELECT murah from fuzzy_harga");
-					}else if($harga == 'sedang'){
-						$bobot_harga = mysqli_query($conn,"SELECT sedang from fuzzy_harga");
-					}else if($harga == 'mahal'){
-						$bobot_harga = mysqli_query($conn,"SELECT mahal from fuzzy_harga");
-					}else{
-						$bobot_harga = "null";
-					}
-	
-					if($jarak == 'dekat'){
-						$bobot_jarak = mysqli_query($conn,"SELECT dekat from fuzzy_jarak");
-					}else if($jarak == 'sedang'){
-						$bobot_jarak = mysqli_query($conn,"SELECT sedang from fuzzy_jarak");
-					}else if($jarak == 'jauh'){
-						$bobot_jarak = mysqli_query($conn,"SELECT jauh from fuzzy_jarak");
-					}else{
-						$bobot_jarak = "null";
-					}
-	
-					if($fasilitas == 'sedikit'){
-						$bobot_fasilitas = mysqli_query($conn,"SELECT sedikit from fuzzy_fasilitas");
-					}else if($fasilitas == 'cukup'){
-						$bobot_fasilitas = mysqli_query($conn,"SELECT cukup from fuzzy_fasilitas");
-					}else if($fasilitas == 'banyak'){
-						$bobot_fasilitas = mysqli_query($conn,"SELECT banyak from fuzzy_fasilitas");
-					}else{
-						$bobot_fasilitas = "null";
-					}
-	
-					if($pengunjung == 'sepi'){
-						$bobot_pengunjung = mysqli_query($conn,"SELECT sepi from fuzzy_pengunjung");
-					}else if($pengunjung == 'biasa'){
-						$bobot_pengunjung = mysqli_query($conn,"SELECT biasa from fuzzy_pengunjung");
-					}else if($pengunjung == 'ramai'){
-						$bobot_pengunjung = mysqli_query($conn,"SELECT ramai from fuzzy_pengunjung");
-					}else{
-						$bobot_pengunjung = "null";
-					}
+				<?php
+           $daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+           $thekrit5 = array();
+           $array_bobot = array();
+           $it=0;
+           while($data = mysqli_fetch_array($daftar_kriteria)):
+             $krit = strtolower($data['kriteria']);
+             array_push($thekrit5, $krit);
+             $tname = "fuzzy_";
+             $tname .= $krit;
+             $sub1 = strtolower($data['bawah']); $sub2 = strtolower($data['tengah']); $sub3 = strtolower($data['atas']);
+           
+             if($inputUser[$it] == $sub1){
+               $bobot = mysqli_query($conn,"SELECT {$sub1} from {$tname}");
+               array_push($array_bobot, $bobot);
+             }else if($inputUser[$it] == $sub2){
+               $bobot = mysqli_query($conn,"SELECT {$sub2} from {$tname}");
+               array_push($array_bobot, $bobot);
+             }else if($inputUser[$it] == $sub3){
+               $bobot = mysqli_query($conn,"SELECT {$sub3} from {$tname}");
+               array_push($array_bobot, $bobot);
+             }else{
+               echo "<h1>Terjadi Masalah Pada Baris Program 153, test.php</h1>";
+             }
+             $it++;
+           endwhile;
+          
 
-					$fuzzy_jenis = array();
-					$fuzzy_harga = array();
-					$fuzzy_jarak = array();
-					$fuzzy_fasilitas = array();
-					$fuzzy_pengunjung = array();
+          $result = mysqli_query($conn,"SELECT * from tempat_wisata_tb");
+          $rowcount=mysqli_num_rows($result);
+          $result2 = mysqli_query($conn,"SELECT * from daftar_kriteria");
+          $rowcount2=mysqli_num_rows($result2);
 					
-					if($bobot_jenis != "null") {
-						$bobot_jenis = mysqli_fetch_all($bobot_jenis);
-						foreach ($bobot_jenis as &$value){
-							array_push($fuzzy_jenis, $value[0]);
-						}
-					}else {for ($x = 0; $x < 15; $x++) {
-						array_push($fuzzy_jenis, 1);
-					  }
-					}
-					if($bobot_harga != "null") {
-						$bobot_harga = mysqli_fetch_all($bobot_harga);
-						foreach ($bobot_harga as &$value){
-							array_push($fuzzy_harga, $value[0]);
-						}
-					}else {for ($x = 0; $x < 15; $x++) {
-						array_push($fuzzy_harga, 1);
-					  }
-					}
-					if($bobot_jarak != "null") {
-						$bobot_jarak = mysqli_fetch_all($bobot_jarak);
-						foreach ($bobot_jarak as &$value){
-							array_push($fuzzy_jarak, $value[0]);
-						}
-					}else {for ($x = 0; $x < 15; $x++) {
-						array_push($fuzzy_jarak, 1);
-					  }
-					}
-					if($bobot_fasilitas != "null") {
-						$bobot_fasilitas = mysqli_fetch_all($bobot_fasilitas);
-						foreach ($bobot_fasilitas as &$value){
-							array_push($fuzzy_fasilitas, $value[0]);
-						}
-					}else {for ($x = 0; $x < 15; $x++) {
-						array_push($fuzzy_fasilitas, 1);
-					  }
-					}
-					if($bobot_pengunjung != "null") {
-						$bobot_pengunjung = mysqli_fetch_all($bobot_pengunjung);
-						foreach ($bobot_pengunjung as &$value){
-							array_push($fuzzy_pengunjung, $value[0]);
-						}
-					}else {for ($x = 0; $x < 15; $x++) {
-						array_push($fuzzy_pengunjung, 1);
-					  }
-					}
-						
+          function get_arrbot($list_arrbot, $rowcount){
+            $temp_array = array();
+            if($list_arrbot != "null"){
+              $arbot = mysqli_fetch_all($list_arrbot);
+              foreach ($arbot as &$value){
+                array_push($temp_array, $value[0]);
+              }
+            }else{
+              for ($x = 0; $x < $rowcount; $x++){
+                array_push($temp_array, 1);
+              }
+            }
+            return $temp_array;
+          }
+          
+          $temp_array = array();
+
+          $it=0;
+          $arrofarrbot = array();
+          $daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
+          while($data = mysqli_fetch_array($daftar_kriteria)):        
+            $arbot = get_arrbot($array_bobot[$it], $rowcount);
+            array_push($arrofarrbot, $arbot);
+            $it++;
+          endwhile;
+					
 					$fire_strength = array();
-					$it = 0;
-					foreach ($fuzzy_jenis as &$value) {
-						if($submit == 'and'){
-							array_push($fire_strength, $value * $fuzzy_harga[$it] * $fuzzy_jarak[$it] * $fuzzy_fasilitas[$it] * $fuzzy_pengunjung[$it]);
-						}else{
-							array_push($fire_strength, $value + $fuzzy_harga[$it] + $fuzzy_jarak[$it] + $fuzzy_fasilitas[$it] + $fuzzy_pengunjung[$it]);
-						}
-						$it = $it + 1;
-					}
+					$it2 = 0;
+          for ($x = 0; $x < $rowcount; $x++){
+            $it1 = 0;
+            if($submit == 'and'){$value = 1;} else{$value = 0;}
+            for ($y = 0; $y < $rowcount2; $y++){
+              if($submit == 'and'){
+                $value = $value * $arrofarrbot[$it1][$it2];
+              }else{
+                $value = $value + $arrofarrbot[$it1][$it2];
+              }
+              $it1++;
+            }
+						$it2++;
+            array_push($fire_strength, $value);
+          }
+					
 					
 					if(array_sum($fire_strength) == 0){
 						echo "<br><h1>TIDAK ADA REKOMENDASI</h1>";
 					}else{
-				
+          
+            
+          $newliskrit = array(); $new_arrofarrbot = array();
+          $it=0;
+          foreach ($thekrit5 as &$valkrit){
+            array_push($newliskrit, $valkrit);
+            array_push($new_arrofarrbot,$arrofarrbot[$it]);
+            $it++; 
+          }
+          if($it<5){
+            $temp = array();
+            for ($x = $it; $x < 5; $x++) {
+              array_push($newliskrit, "kosong");
+              for ($x = 0; $x < $rowcount; $x++){
+                array_push($temp, "kosong");
+              }
+              array_push($new_arrofarrbot, $temp);
+            }
+          }
+
+          if($rowcount2 == 1){
+            //create rekomendasi_tb untuk menampung yg direkomendasikan
+          $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+         )");
+          //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+          $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+          )");
+          }elseif($rowcount2 == 2){
+                        //create rekomendasi_tb untuk menampung yg direkomendasikan
+          $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+         )");
+          //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+          $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+          )");
+          }elseif($rowcount2 == 3){
+            //create rekomendasi_tb untuk menampung yg direkomendasikan
+            $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+
+            //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+            $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+
+          }elseif($rowcount2 == 4){
+            //create rekomendasi_tb untuk menampung yg direkomendasikan
+            $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[3]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+            //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+            $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[3]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+          }
+          elseif($rowcount2 == 5){
+            //create rekomendasi_tb untuk menampung yg direkomendasikan
+            $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[3]} float(20) NOT NULL,
+            {$newliskrit[4]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+            //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+            $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[3]} float(20) NOT NULL,
+            {$newliskrit[4]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+          }else{
+            echo "<h1>Terdapat masalah pada data kriteria</h1>";
+          }
+
 					$temp = array();
 					$idx = 1;
 					foreach ($fire_strength as &$value) {
 						if($value > 0){
 							$index_wisata = $idx;
-							$get_wisata_query = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (id = '$index_wisata') ");
+							$get_wisata_query = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (id = '$index_wisata')");
 							while($data = mysqli_fetch_array($get_wisata_query)):
-								$ob_wis = $data['obyek_wisata'];
-								$jns = $data['jenis'];
-								$hrg = $data['harga'];
-								$jrk = $data['jarak'];
-								$fsls = $data['fasilitas'];
-								$pgnj = $data['pengunjung'];
-								$it = $idx-1;
-								$fs  = $fire_strength[$it];
-								$b_jns = $fuzzy_jenis[$it];
-								$b_hrg = $fuzzy_harga[$it];
-								$b_jrk = $fuzzy_jarak[$it];
-								$b_fsls = $fuzzy_fasilitas[$it];
-								$b_pgnj = $fuzzy_pengunjung[$it];
-	
-								mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, jenis, harga, jarak, fasilitas, pengunjung, fire_strength) 
-													VALUES('$ob_wis', '$jns','$hrg', '$jrk', '$fsls', '$pgnj', '$fs')");
-								mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, bobot_jenis, bobot_harga, bobot_jarak, bobot_fasilitas, bobot_pengunjung, fire_strength) 
-													VALUES('$ob_wis', '$b_jns','$b_hrg', '$b_jrk', '$b_fsls', '$b_pgnj', '$fs')");
+
+                if($rowcount2==1){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+
+                  mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, fire_strength) 
+													VALUES('$ob_wis', '$krit1', '$fs')");
+								  mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, fire_strength) 
+													VALUES('$ob_wis', '$bk1', '$fs')");
+                }elseif($rowcount2==2){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $krit2 = $data[$newliskrit[1]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+                  $bk2 = $new_arrofarrbot[1][$it];
+
+                  mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]}, fire_strength) 
+                  VALUES('$ob_wis', '$krit1', '$krit2', '$fs')");
+                  mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]}, fire_strength) 
+                  VALUES('$ob_wis', '$bk1', '$bk2','$fs')");
+                }elseif($rowcount2==3){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $krit2 = $data[$newliskrit[1]];
+                  $krit3 = $data[$newliskrit[2]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+                  $bk2 = $new_arrofarrbot[1][$it];
+                  $bk3 = $new_arrofarrbot[2][$it];
+                  
+                  $result1 = mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]}, {$newliskrit[2]}, fire_strength) 
+                  VALUES('$ob_wis', '$krit1', '$krit2','$krit3', '$fs')");
+                  $result2 = mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]}, {$newliskrit[2]}, fire_strength) 
+                  VALUES('$ob_wis', '$bk1', '$bk2','$bk3','$fs')");
+
+                  
+
+                }elseif($rowcount2==4){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $krit2 = $data[$newliskrit[1]];
+                  $krit3 = $data[$newliskrit[2]];
+                  $krit4 = $data[$newliskrit[3]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+                  $bk2 = $new_arrofarrbot[1][$it];
+                  $bk3 = $new_arrofarrbot[2][$it];
+                  $bk4 = $new_arrofarrbot[3][$it];
+
+                  mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]}, fire_strength) 
+                  VALUES('$ob_wis', '$krit1', '$krit2', '$krit3', '$krit4', '$fs')");
+                  mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]}, fire_strength) 
+                  VALUES('$ob_wis', '$bk1', '$bk2','$bk3','$bk4','$fs')");
+                }elseif($rowcount2==5){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $krit2 = $data[$newliskrit[1]];
+                  $krit3 = $data[$newliskrit[2]];
+                  $krit4 = $data[$newliskrit[3]];
+                  $krit5 = $data[$newliskrit[4]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+                  $bk2 = $new_arrofarrbot[1][$it];
+                  $bk3 = $new_arrofarrbot[2][$it];
+                  $bk4 = $new_arrofarrbot[3][$it];
+                  $bk5 = $new_arrofarrbot[4][$it];
+
+                  mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]},{$newliskrit[4]}, fire_strength) 
+                  VALUES('$ob_wis', '$krit1', '$krit2', '$krit3', '$krit4','$krit5', '$fs')");
+                  mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]},{$newliskrit[4]}, fire_strength) 
+                  VALUES('$ob_wis', '$bk1', '$bk2','$bk3','$bk4','$bk5','$fs')");
+                }else{
+                  echo "<h1>Terdapat masalah pada data kriteria</h1>";
+                }
 	
 							endwhile;
 						} $idx++;
@@ -313,7 +462,8 @@ include"functions.php";
 						</tr>
 	
 				<?php $num++; endwhile; 
-				mysqli_query($conn, "DELETE FROM rekomendasi_tb"); }
+          $del = mysqli_query($conn,"DROP TABLE rekomendasi_tb");
+        }
 				?>
 
 			</tbody>
@@ -344,17 +494,20 @@ include"functions.php";
 					<?php
 						$get_fuzzy_query = mysqli_query($conn,"SELECT * from penghitungan_bobot_tb ORDER BY fire_strength DESC");
 						$num = 1;
-						while($data = mysqli_fetch_array($get_fuzzy_query)):
-					?>
-						<tr>
+            if($get_fuzzy_query){
+              while($data = mysqli_fetch_array($get_fuzzy_query)):
+          ?>
+           
+           <tr>
 							<th><?=$num;?></th>
 							<th><?=$data['obyek_wisata'];?></th>
 							
 							<?php
 							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria");
 							while($dakrit = mysqli_fetch_array($daftar_kriteria)):
-								$str="bobot_";
-								$str.=strtolower($dakrit['kriteria']);
+								//$str="bobot_";
+								//$str.=strtolower($dakrit['kriteria']);
+                $str=strtolower($dakrit['kriteria']);
 							?>
 							
 							<th><?=$data[$str];?></th>
@@ -363,7 +516,14 @@ include"functions.php";
 							<th><?=$data['fire_strength'];?></th>
 						</tr>
 
-					<?php $num++; endwhile; mysqli_query($conn, "DELETE FROM penghitungan_bobot_tb"); }?>
+					<?php $num++; endwhile; 
+          $del = mysqli_query($conn,"DROP TABLE penghitungan_bobot_tb"); }
+          ?>
+           
+           
+           <?php } ?> 
+						
+						
 
 					</tbody>
 				</table>
