@@ -9,11 +9,18 @@ if($_SESSION['legitUser'] != 'qwerty'){
 
 if(isset($_POST['submit'])){
     $ob_wis = $_POST['nama'];
-    $jns = $_POST['jenis'];
-    $hrg = $_POST['harga'];
-    $jrk = $_POST['jarak'];
-    $fsls = $_POST['fasilitas'];
-    $pgnj = $_POST['pengunjung'];
+
+    $arr_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
+    $jumlah_kriteria = mysqli_num_rows($arr_kriteria);
+    $input_kriteria = array();
+    $list_kriteria = array();
+    $list_kriteria2 = array();
+    while($data = mysqli_fetch_array($arr_kriteria)):
+        $kriteria = strtolower($data['kriteria']);
+        array_push($input_kriteria, $_POST[$kriteria]);
+        array_push($list_kriteria, $kriteria);
+        array_push($list_kriteria2, $data['kriteria']);
+    endwhile;
 
     //cek dulu apakah sudah ada di database
     $result1 = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (obyek_wisata = '$ob_wis')");
@@ -23,62 +30,86 @@ if(isset($_POST['submit'])){
         echo "<script>alert('$message'); window.location.replace('data_lokasi_wisata.php');</script>";
     }else{
         //insert data to tempat_wisata_tb
-        $result2 = mysqli_query($conn, "INSERT INTO tempat_wisata_tb(obyek_wisata, jenis, harga, jarak, fasilitas, pengunjung) 
-        VALUES('$ob_wis', '$jns','$hrg', '$jrk', '$fsls', '$pgnj')");
+        if($jumlah_kriteria == 0){
+            $sukses = mysqli_query($conn, "INSERT INTO tempat_wisata_tb(obyek_wisata) VALUES('$ob_wis')");
+        }
+        else{
+            for($x=0; $x<$jumlah_kriteria; $x++){
+                $krit = $list_kriteria[$x];
+                $krit2 = $list_kriteria2[$x];
+                $valkrit = $input_kriteria[$x];
+                $cek = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (obyek_wisata = '$ob_wis')");
+                $count_cek = mysqli_num_rows($cek);
+                if($count_cek == 0){
+                    $sukses = mysqli_query($conn, "INSERT INTO tempat_wisata_tb(obyek_wisata, {$krit}) 
+                    VALUES('$ob_wis', '$valkrit')");
+                }else{
+                    $get_kategori = mysqli_query($conn,"SELECT kategori from daftar_kriteria_static WHERE (kriteria = '$krit2')");
+                    $row = $get_kategori->fetch_row();
+                    $value = $row[0] ?? false;
+                    if($value == "fuzzy"){
+                        $sukses = mysqli_query($conn, "UPDATE tempat_wisata_tb SET {$krit} = $valkrit WHERE (obyek_wisata = '$ob_wis')");
+                    }else{
+                        $get_kategori = mysqli_query($conn,"SELECT bawah, tengah, atas from daftar_kriteria_static WHERE (kriteria = '$krit2')");
+                        $row = $get_kategori->fetch_assoc();
+                        if($valkrit== "bawah"){$valu = $row['bawah'];}
+                        if($valkrit == "tengah"){$valu = $row['tengah'];}
+                        if($valkrit == "atas"){$valu = $row['atas'];}
+                        $sukses = mysqli_query($conn, "UPDATE tempat_wisata_tb SET {$krit} = '$valu' WHERE (obyek_wisata = '$ob_wis')");
+                    }
+                }   
+            }
+        }
 
         $getid = mysqli_query($conn,"SELECT DISTINCT(id) from tempat_wisata_tb WHERE (obyek_wisata = '$ob_wis')");
         $row = $getid->fetch_row();
         $nid = $row[0] ?? false;
         $id = (int)$nid;
-        $hrg = (int)$hrg;
-        $jrk = (int)$jrk;
-        $fsls = (int)$fsls;
-        $pgnj = (int)$pgnj;
+        $it = 0;
+        foreach($list_kriteria2 as &$nilai_krit){
+            $get_kategori = mysqli_query($conn,"SELECT kategori, nbawah, ntengah, natas, bawah, tengah, atas from daftar_kriteria_static WHERE (kriteria = '$nilai_krit')");
+            $row = $get_kategori->fetch_assoc();
+            $kategori = $row['kategori'];
+            $batas_bawah = $row['nbawah'];
+            $batas_tengah = $row['ntengah'];
+            $batas_atas = $row['natas'];
+            $name_bawah = strtolower($row['bawah']);
+            $name_tengah = strtolower($row['tengah']);
+            $name_atas = strtolower($row['atas']);
+            $name_krit  = $list_kriteria[$it];
+            $valinput = $input_kriteria[$it];
+            $tname = "fuzzy_";
+            $tname .= $list_kriteria[$it];
 
-        //insert data to fuzzy_jenis
-        $bawah = getbobot_jenis($jns)[0];
-        $tengah = getbobot_jenis($jns)[1];
-        $atas = getbobot_jenis($jns)[2];
-        mysqli_query($conn, "INSERT INTO fuzzy_jenis(id, obyek_wisata, jenis, alam, sosial_budaya, religi_sejarah) 
-        VALUES('$id','$ob_wis', '$jns', '$bawah', '$tengah', '$atas')");
+            if($kategori == "fuzzy"){
+                $v0=(int)$valinput ; $v1= $batas_bawah; $v2= $batas_tengah; $v3= $batas_atas;
+                $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
+                $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
+                $atas = getbobot($v0, "atas",$v1, $v2, $v3);
+                $sukses2 = mysqli_query($conn, "INSERT INTO {$tname}(id, obyek_wisata, {$name_krit}, {$name_bawah}, {$name_tengah}, {$name_atas}) 
+                VALUES('$id','$ob_wis', '$v0', '$bawah', '$tengah', '$atas')");
+            }else{
+                $v0=(string)$valinput;
+                if($v0 == "bawah"){$valu = $row['bawah'];}
+                if($v0 == "tengah"){$valu = $row['tengah'];}
+                if($v0 == "atas"){$valu = $row['atas'];}
+                $bawah = getbobot_nonfuzzy($v0)[0];
+                $tengah = getbobot_nonfuzzy($v0)[1];
+                $atas = getbobot_nonfuzzy($v0)[2];
+                $sukses2 = mysqli_query($conn, "INSERT INTO {$tname}(id, obyek_wisata, {$name_krit}, {$name_bawah}, {$name_tengah}, {$name_atas}) 
+                VALUES('$id','$ob_wis', '$valu', '$bawah', '$tengah', '$atas')");
+            }
+            $it++;
+        }
 
-        //insert data to fuzzy_fasilitas
-        $v0=$fsls ;$v1= 5; $v2= 10; $v3= 20;
-        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
-        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
-        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
-        mysqli_query($conn, "INSERT INTO fuzzy_fasilitas(id, obyek_wisata, fasilitas, sedikit, cukup, banyak) 
-        VALUES('$id','$ob_wis', '$fsls', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_harga
-        $v0=$hrg ; $v1= 10000; $v2= 25000; $v3= 50000;
-        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
-        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
-        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
-        mysqli_query($conn, "INSERT INTO fuzzy_harga(id, obyek_wisata, harga, murah, sedang, mahal) 
-        VALUES('$id','$ob_wis', '$hrg', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_jarak
-        $v0=$jrk ; $v1= 5; $v2= 10; $v3= 20;
-        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
-        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
-        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
-        mysqli_query($conn, "INSERT INTO fuzzy_jarak(id, obyek_wisata, jarak, dekat, sedang, jauh) 
-        VALUES('$id','$ob_wis', '$jrk', '$bawah', '$tengah', '$atas')");
-
-        //insert data to fuzzy_pengunjung
-        $v0=$pgnj ; $v1= 1000; $v2= 4500; $v3= 10000;
-        $bawah = getbobot($v0, "bawah", $v1, $v2, $v3);
-        $tengah = getbobot($v0, "tengah",$v1, $v2, $v3);
-        $atas = getbobot($v0, "atas",$v1, $v2, $v3);
-        mysqli_query($conn, "INSERT INTO fuzzy_pengunjung(id, obyek_wisata, pengunjung, sepi, biasa, ramai) 
-        VALUES('$id','$ob_wis', '$pgnj', '$bawah', '$tengah', '$atas')");
-
-        if($result2){ 
+        if($sukses && $sukses2){ 
             $message = "Berhasil menambahkan data lokasi wisata.";
             echo "<script>alert('$message'); window.location.replace('data_lokasi_wisata.php');</script>";
         } else {
-            echo $result2;
+            echo "<h1>WARNING !!!</h1> <br>";
+            echo $sukses;
+            echo "<br>---------------------------<br>";
+            echo $sukses2;
         } 
     }
 }

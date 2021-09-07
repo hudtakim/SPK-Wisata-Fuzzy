@@ -14,11 +14,13 @@ if($item == 'kriteria'){
 }
 if($item == 'lokasi'){
     $del = mysqli_query($conn,"DELETE FROM tempat_wisata_tb where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM fuzzy_fasilitas where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM fuzzy_harga where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM fuzzy_jarak where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM fuzzy_pengunjung where id = '$id'");
-    $del = mysqli_query($conn,"DELETE FROM fuzzy_jenis where id = '$id'");
+
+    $arr_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
+    while($data = mysqli_fetch_array($arr_kriteria)):
+        $tname = "fuzzy_";
+        $tname.= strtolower($data['kriteria']);
+        $del = mysqli_query($conn,"DELETE FROM {$tname} where id = '$id'");
+    endwhile;
 }
 
 if($del)

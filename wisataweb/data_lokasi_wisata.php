@@ -93,14 +93,19 @@ if($_SESSION['legitUser'] != 'qwerty'){
 				<div class="form-row align-items-center">
 					<div class="col-auto my-1 input-group">
                         <input type="text" name="nama"  placeholder="Nama Lokasi" class="mr-1 mt-3" required>
-						<select name='jenis' class=" mr-1 mt-3" id="inlineFormCustomSelect" required>
-							<option value="">Jenis Wisata</option>
-                            <option value="Alam">Alam</option>
-                            <option value="Sosial dan Budaya">Sosial dan Budaya</option>
-                            <option value="Religi dan Sejarah">Religi dan Sejarah</option>
-						</select>
 						<?php
-							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE kriteria != 'jenis'");
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE (kategori = 'non_fuzzy')");
+							while($data = mysqli_fetch_array($daftar_kriteria)):
+						?>
+						<select name="<?= strtolower($data['kriteria']) ?>" class=" mr-1 mt-3" id="inlineFormCustomSelect" required>
+							<option value=""><?=$data['kriteria']?></option>
+                            <option value="bawah"><?=$data['bawah']?></option>
+                            <option value="tengah"><?=$data['tengah']?></option>
+                            <option value="atas"><?=$data['atas']?></option>
+						</select>
+						<?php endwhile;?>
+						<?php
+							$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE (kategori = 'fuzzy')");
 							while($data = mysqli_fetch_array($daftar_kriteria)):
 						?>
 							<input name="<?= strtolower($data['kriteria']) ?>" type="number" placeholder="<?=$data['kriteria'];?>" class="mr-1 mt-3" required>

@@ -132,7 +132,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
                             <tr>
                                 <th><?=$num;?></th>
                                 <th><?=$data['obyek_wisata'];?></th>
-                                <th><input name="datakriteria<?=$data['id'];?>" type="number" placeholder="Nilai Kriteria"></th>
+                                <th><input name="datakriteria<?=$data['id'];?>" type="number" placeholder="Nilai Kriteria" class="datakriteria" required></th>
                             </tr>
 
                         <?php $num++; endwhile;?>
@@ -158,7 +158,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
                                 <th><?=$num;?></th>
                                 <th><?=$data['obyek_wisata'];?></th>
 								<th>
-								<select name="datakritnon<?=$data['id'];?>" class="custom-select mr-sm-1" required>
+								<select name="datakritnon<?=$data['id'];?>" class="custom-select mr-sm-1 datakritnon" required>
 									<option value="">Choose...</option>
 									<option value="bawah">Sub Kriteria 1</option>
 									<option value="tengah">Sub Kriteria 2</option>
@@ -192,21 +192,41 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		var v1 = document.getElementById("v1");
 		var v2 = document.getElementById("v2");
 		var v3 = document.getElementById("v3");
+
+		var input_fuzzy = document.querySelectorAll(".datakriteria");
+		var input_nonfuzzy = document.querySelectorAll(".datakritnon");
+
 		if(y.value == "fuzzy"){
 			if (x.style.display === "none") {
 				x.style.display = "block";
 				v1.value = ""; v2.value = ""; v3.value = "";
+				for (let i = 0; i < input_fuzzy.length; i++) {
+					input_fuzzy[i].required = true;
+					input_nonfuzzy[i].required = false;
+				}
 			} else {
 				x.style.display = "block";
 				v1.value = ""; v2.value = ""; v3.value = "";
+				for (let i = 0; i < input_fuzzy.length; i++) {
+					input_fuzzy[i].required = true;
+					input_nonfuzzy[i].required = false;
+				}
 			}
 		}else{
 			if (x.style.display === "none") {
 				x.style.display = "none";
 				v1.value = 0; v2.value = 0; v3.value = 0;
+				for (let i = 0; i < input_nonfuzzy.length; i++) {
+					input_fuzzy[i].required = false;
+					input_nonfuzzy[i].required = true;
+				}
 			} else {
 				x.style.display = "none";
 				v1.value = 0; v2.value = 0; v3.value = 0;
+				for (let i = 0; i < input_nonfuzzy.length; i++) {
+					input_fuzzy[i].required = false;
+					input_nonfuzzy[i].required = true;
+				}
 			}
 		}
 		if(y.value == "fuzzy"){
