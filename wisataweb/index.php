@@ -69,7 +69,7 @@ include"functions.php";
 <body>
 	<div class='container mt-5'>
 		<div class="jumbotron" id='home'>
-			<h1 class="text-light shadow-lg"><a href="/wisataweb">Sistem Pendukung Keputusan</a></h1>
+			<h1 class="text-light shadow-lg"><a href="index.php">Sistem Pendukung Keputusan</a></h1>
 			<p class="h3 text-light shadow-lg" style="text-shadow: 2px 2px red;">Pemilihan Objek Pariwisata Tegal</p>
 		</div>
     <?php
