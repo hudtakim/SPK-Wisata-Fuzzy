@@ -21,6 +21,15 @@ Cara Kerja Aplikasi:
 6. Menampilkan data wisata dari data base sementara pada tampilan web sebagai tempat wisata yang direkomendasikan.
 7. Menghapus data wisata pada database sementara.
 
+Admin Guide:
+1. Sudah tersedia laman khus admin web (update 7 September 2021).
+2. Previlege admin: 
+   - Menambah data lokasi wisata
+   - Menghapus data lokasi wisata
+   - Menambah data kriteria
+   - Menghapus data kriteria
+   - Mengaktifkan atau menonaktifkan kriteria pada tampilan user.
+
 Perhatian: 
 1. Data yang digunakan pada aplikasi ini berasal dari hasil penelitian Agung Prayogi, 
    silahkan baca paper penelitiannya di: https://docplayer.info/82508178-Sistem-pendukung-keputusan-pemilihan-obyek-wisata-tegal-menggunakan-metode-fuzzy-tahani.html
