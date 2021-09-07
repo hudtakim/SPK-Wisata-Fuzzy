@@ -25,10 +25,16 @@ if(isset($_POST['submit'])){
     //cek dulu apakah kriteria sudah ada di database
     $result = mysqli_query($conn,"SELECT * from daftar_kriteria_static WHERE (kriteria = '$nama_kriteria')");
     $rowcount = mysqli_num_rows($result);
+    $result = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
+    $kriteria_tersimpan = mysqli_num_rows($result);
     if($rowcount > 0){
         $message = "Gagal, kriteria yang anda masukkan sudah ada di database!";
         echo "<script>alert('$message'); window.location.replace('tambah_kriteria.php');</script>";
-    }else{
+    }elseif($kriteria_tersimpan == 10){
+        $message = "Gagal, batas kriteria yang dapat disimpan telah mencapai batas maksimal (10). Silahkan hapus kriteria terlebih dahulu atau upgrade ke versi pro dengan menghubungi developer: hudtakim@gmail.com";
+        echo "<script>alert('$message'); window.location.replace('tambah_kriteria.php');</script>";
+    }
+    else{
         $result = mysqli_query($conn, "INSERT INTO daftar_kriteria_static(kategori, kriteria, bawah, tengah, atas, nbawah, ntengah, natas) 
         VALUES('$kategori','$nama_kriteria', '$nama_sub1','$nama_sub2', '$nama_sub3', '$nbawah', '$ntengah', '$natas')");
         if($result){ 

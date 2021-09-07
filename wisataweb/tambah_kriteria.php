@@ -21,6 +21,19 @@ if($_SESSION['legitUser'] != 'qwerty'){
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<script>
+		function validateForm() {
+			let nama = document.forms["form-kriteria"]["nama"].value;
+			let sub1 = document.forms["form-kriteria"]["sub1"].value;
+			let sub2 = document.forms["form-kriteria"]["sub2"].value;
+			let sub3 = document.forms["form-kriteria"]["sub3"].value;
+			if(nama.indexOf(' ') >= 0 || sub1.indexOf(' ') >= 0 || sub2.indexOf(' ') >= 0 || sub3.indexOf(' ') >= 0){
+				alert("Nama kriteria dan sub-kriteria tidak boleh mengandung spasi, gunakan underscore ' _ ' sebagai pengganti.");
+				return false;
+			}
+		}
+	</script>
 </head>
 
 <style type="text/css">
@@ -86,7 +99,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
 		<a href="admin.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Kembali ke Menu Utama</button></a>  
 
 		<div class="tambah-lokasi mt-4">
-			<form method='POST' action="tambah_kriteria_process.php">
+			<form method='POST' action="tambah_kriteria_process.php" name="form-kriteria" onsubmit="return validateForm()">
 				<div class="form-row align-items-center">
 				<div class="mt-3"> Pilih jenis kriteria: <div>
 					<div class="col-auto my-1 input-group">
@@ -98,10 +111,10 @@ if($_SESSION['legitUser'] != 'qwerty'){
                     </div>
                     <div class="mt-3"> Isikan nama kriteria dan sub-kriteria: <div>
 					<div class="col-auto my-1 input-group">
-                        <input type="text" name="nama"  placeholder="Nama Kriteria" class="mr-2" required>
-                        <input type="text" name="sub1"  placeholder="Sub Kriteria 1" class="mr-2" required>
-                        <input type="text" name="sub2"  placeholder="Sub Kriteria 2" class="mr-2" required>
-                        <input type="text" name="sub3"  placeholder="Sub Kriteria 3" class="mr-2" required>
+                        <input type="text" name="nama"  placeholder="Nama Kriteria" class="mr-2" onchange="updateSubText()" required>
+                        <input type="text" name="sub1"  placeholder="Sub Kriteria 1" class="mr-2" onchange="updateSubText()" required>
+                        <input type="text" name="sub2"  placeholder="Sub Kriteria 2" class="mr-2" onchange="updateSubText()" required>
+                        <input type="text" name="sub3"  placeholder="Sub Kriteria 3" class="mr-2" onchange="updateSubText()" required>
                     </div>
 					<div id="coba" style="display: none;">
 						<div class="mt-3"> Isikan nilai batas:</div>
@@ -119,7 +132,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
                             <tr>
                                 <th>No</th>
                                 <th>Nama Lokasi</th>
-                                <th>Data Kriteria</th>
+                                <th class="label-kriteria">Data Kriteria</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,7 +157,7 @@ if($_SESSION['legitUser'] != 'qwerty'){
                             <tr>
                                 <th>No</th>
                                 <th>Nama Lokasi</th>
-                                <th>Data Kriteria</th>
+                                <th class="label-kriteria">Data Kriteria</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -160,9 +173,9 @@ if($_SESSION['legitUser'] != 'qwerty'){
 								<th>
 								<select name="datakritnon<?=$data['id'];?>" class="custom-select mr-sm-1 datakritnon" required>
 									<option value="">Choose...</option>
-									<option value="bawah">Sub Kriteria 1</option>
-									<option value="tengah">Sub Kriteria 2</option>
-									<option value="atas">Sub Kriteria 3</option>
+									<option value="bawah" class="s1">Sub Kriteria 1</option>
+									<option value="tengah" class="s2">Sub Kriteria 2</option>
+									<option value="atas" class="s3">Sub Kriteria 3</option>
 								</select>
 								</th>
 							</tr>
@@ -184,6 +197,26 @@ if($_SESSION['legitUser'] != 'qwerty'){
 </html>
 
 <script>
+	function updateSubText(){
+		var s1 = document.querySelectorAll(".s1");
+		var s2 = document.querySelectorAll(".s2");
+		var s3 = document.querySelectorAll(".s3");
+		var label = document.querySelector(".label-kriteria");
+
+		let nama = document.forms["form-kriteria"]["nama"].value;
+		let sub1 = document.forms["form-kriteria"]["sub1"].value;
+		let sub2 = document.forms["form-kriteria"]["sub2"].value;
+		let sub3 = document.forms["form-kriteria"]["sub3"].value;
+
+		for (let i = 0; i < s1.length; i++){
+			s1[i].innerHTML = sub1;
+			s2[i].innerHTML = sub2;
+			s3[i].innerHTML = sub3;
+			
+		}
+		label.innerHTML = "Data " + nama;
+	}
+
 	function myFunction() {
 		var x = document.getElementById("coba");
 		var y = document.getElementById("inlineFormCustomSelect");

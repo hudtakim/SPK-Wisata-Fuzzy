@@ -96,11 +96,23 @@ if($_SESSION['legitUser'] != 'qwerty'){
 							<option value="">Choose...</option>
 				<?php
 						$daftar_kriteria = mysqli_query($conn,"SELECT * from daftar_kriteria_static");
-						$num = 1;
+							
 						while($data = mysqli_fetch_array($daftar_kriteria)):
-					?>
-							<option value="<?=$data['kriteria'];?>"><?=$data['kriteria'];?></option>
-							<?php $num++; endwhile;?>
+							$status = "false";
+							$daftar_kriteria_aktif = mysqli_query($conn,"SELECT * from daftar_kriteria");
+							while($data_aktif = mysqli_fetch_array($daftar_kriteria_aktif)):
+								if($data['kriteria'] == $data_aktif['kriteria']){
+									$status = "true";
+								}
+							endwhile;
+							if($status == "true"){
+				?>
+								<option value="<?=$data['kriteria'];?>"><?=$data['kriteria'];?> (Aktif)</option>
+				<?php       }else{
+ 				?>  			<option value="<?=$data['kriteria'];?>"><?=$data['kriteria'];?></option>
+				<?php		}
+						endwhile;
+				?>
 						</select>
 						<button type="submit" class="btn btn-success float ml-2" name="submit">Aktifkan Kriteria</button>
 						<button type="submit" class="btn btn-danger float ml-2" name="submit-del">Hapus Kriteria</button>

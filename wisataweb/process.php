@@ -26,7 +26,7 @@ if(isset($_POST['submit'])){
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
         }else{
             if($jumlah_kriteria_aktif == 6){
-                $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 6.";
+                $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 6. Silahkan non-aktifkan kriteria terlebih dahulu atau upgrade ke versi pro dengan menghubungi developer: hudtakim@gmail.com";
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
             }else{
                 while($data = mysqli_fetch_array($result1)):
