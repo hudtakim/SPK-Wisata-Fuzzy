@@ -25,8 +25,8 @@ if(isset($_POST['submit'])){
             $message = "Kriteria yang anda pilih sudah aktif.";
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
         }else{
-            if($jumlah_kriteria_aktif == 5){
-                $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 5.";
+            if($jumlah_kriteria_aktif == 6){
+                $message = "Gagal mengaktifkan kriteria, Batas jumlah kriteria aktif adalah 6.";
                 echo "<script>alert('$message'); window.location.replace('admin_page.php');</script>";
             }else{
                 while($data = mysqli_fetch_array($result1)):

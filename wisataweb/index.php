@@ -363,7 +363,35 @@ include"functions.php";
             fire_strength float(20) NOT NULL,
             PRIMARY KEY ( id )
             )");
-          }else{
+          }elseif($rowcount2 == 6){
+            //create rekomendasi_tb untuk menampung yg direkomendasikan
+            $result = mysqli_query($conn, "CREATE TABLE rekomendasi_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} varchar(20) NOT NULL,
+            {$newliskrit[1]} varchar(20) NOT NULL,
+            {$newliskrit[2]} varchar(20) NOT NULL,
+            {$newliskrit[3]} varchar(20) NOT NULL,
+            {$newliskrit[4]} varchar(20) NOT NULL,
+            {$newliskrit[5]} varchar(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+            //create penghitungan_bobot_tb untuk menampung bobot2 rekomendasi
+            $result = mysqli_query($conn, "CREATE TABLE penghitungan_bobot_tb(
+            id INT NOT NULL AUTO_INCREMENT,
+            obyek_wisata VARCHAR(30) NOT NULL,
+            {$newliskrit[0]} float(20) NOT NULL,
+            {$newliskrit[1]} float(20) NOT NULL,
+            {$newliskrit[2]} float(20) NOT NULL,
+            {$newliskrit[3]} float(20) NOT NULL,
+            {$newliskrit[4]} float(20) NOT NULL,
+            {$newliskrit[5]} float(20) NOT NULL,
+            fire_strength float(20) NOT NULL,
+            PRIMARY KEY ( id )
+            )");
+          }
+          else{
             echo "<h1>Terdapat masalah pada data kriteria</h1>";
           }
 
@@ -460,7 +488,29 @@ include"functions.php";
                   VALUES('$ob_wis', '$krit1', '$krit2', '$krit3', '$krit4','$krit5', '$fs')");
                   mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]},{$newliskrit[4]}, fire_strength) 
                   VALUES('$ob_wis', '$bk1', '$bk2','$bk3','$bk4','$bk5','$fs')");
-                }else{
+                }elseif($rowcount2==6){
+                  $ob_wis = $data['obyek_wisata'];
+                  $krit1 = $data[$newliskrit[0]];
+                  $krit2 = $data[$newliskrit[1]];
+                  $krit3 = $data[$newliskrit[2]];
+                  $krit4 = $data[$newliskrit[3]];
+                  $krit5 = $data[$newliskrit[4]];
+                  $krit6 = $data[$newliskrit[5]];
+                  $it = $idx-1;
+								  $fs  = $fire_strength[$it];
+                  $bk1 = $new_arrofarrbot[0][$it];
+                  $bk2 = $new_arrofarrbot[1][$it];
+                  $bk3 = $new_arrofarrbot[2][$it];
+                  $bk4 = $new_arrofarrbot[3][$it];
+                  $bk5 = $new_arrofarrbot[4][$it];
+                  $bk6 = $new_arrofarrbot[5][$it];
+
+                  mysqli_query($conn, "INSERT INTO rekomendasi_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]},{$newliskrit[4]}, {$newliskrit[5]}, fire_strength) 
+                  VALUES('$ob_wis', '$krit1', '$krit2', '$krit3', '$krit4','$krit5','$krit6', '$fs')");
+                  mysqli_query($conn, "INSERT INTO penghitungan_bobot_tb(obyek_wisata, {$newliskrit[0]}, {$newliskrit[1]},{$newliskrit[2]}, {$newliskrit[3]},{$newliskrit[4]}, {$newliskrit[5]}, fire_strength) 
+                  VALUES('$ob_wis', '$bk1', '$bk2','$bk3','$bk4','$bk5','$bk6','$fs')");
+                }
+                else{
                   echo "<h1>Terdapat masalah pada data kriteria</h1>";
                 }
 	
