@@ -75,6 +75,7 @@ include"functions.php";
     <?php
       if(isset($_SESSION['legitUser'])){
         echo '<a href="logout.php"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Logout</button></a>';
+        echo '<a href="admin.php"><button type="button" class="btn btn-info btn-lg btn-block mt-4 mb-4">Kembali ke Menu Admin</button></a>';
       }else{
         echo '<a href="login_form.html"><button type="button" class="btn btn-primary btn-lg btn-block mt-4 mb-4">Login Admin</button></a>';
       }
@@ -368,10 +369,17 @@ include"functions.php";
 
 					$temp = array();
 					$idx = 1;
+          $arrofid = array();
+          $daftar_id = mysqli_query($conn,"SELECT * from tempat_wisata_tb");
+           while($data = mysqli_fetch_array($daftar_id)):
+              array_push($arrofid, $data['id']);
+           endwhile;
+
 					foreach ($fire_strength as &$value) {
 						if($value > 0){
+              $inwis = $idx -1;
 							$index_wisata = $idx;
-							$get_wisata_query = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (id = '$index_wisata')");
+							$get_wisata_query = mysqli_query($conn,"SELECT * from tempat_wisata_tb WHERE (id = '$arrofid[$inwis]')");
 							while($data = mysqli_fetch_array($get_wisata_query)):
 
                 if($rowcount2==1){
@@ -531,7 +539,9 @@ include"functions.php";
 						</tr>
 
 					<?php $num++; endwhile; 
-          $del = mysqli_query($conn,"DROP TABLE penghitungan_bobot_tb"); }
+          $del = mysqli_query($conn,"DROP TABLE penghitungan_bobot_tb");
+          if($del) {mysqli_close($conn);}
+        }
           ?>
            
            
