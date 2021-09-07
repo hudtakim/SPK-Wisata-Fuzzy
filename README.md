@@ -33,5 +33,5 @@ Admin Guide:
 Perhatian: 
 1. Sebagian data lokasi wisata yang digunakan pada aplikasi ini berasal dari hasil penelitian Agung Prayogi, 
    silahkan baca paper penelitiannya di: https://docplayer.info/82508178-Sistem-pendukung-keputusan-pemilihan-obyek-wisata-tegal-menggunakan-metode-fuzzy-tahani.html
-2. Projek ini dibuat hanya sebagai latihan/pembelajaran saja dan bukan untuk keperluan lain-lain.
+2. Projek ini dibuat hanya sebagai latihan/pembelajaran saja.
 3. Untuk mencoba aplikasi ini secara langsung silahkan menuju link berikut: http://hudtakim.byethost12.com/spkwisata
